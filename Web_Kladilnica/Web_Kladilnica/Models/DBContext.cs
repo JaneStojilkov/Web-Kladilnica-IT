@@ -8,7 +8,7 @@ namespace Web_Kladilnica.Models
 {
     public class DBContext :DbContext
     {
-        public DbSet<ApplicationUser> Users { get; set; }
+       // public DbSet<ApplicationUser> Users { get; set; }
 
         public System.Data.Entity.DbSet<Web_Kladilnica.Models.Game> Games { get; set; }
 

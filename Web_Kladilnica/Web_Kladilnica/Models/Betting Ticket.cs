@@ -14,7 +14,7 @@ namespace Web_Kladilnica.Models
         public int ID { get; set; }
         public Boolean Won { get; set; }
         public DateTime Time { get; set; }
-        public ApplicationUser User { get; set; }
+       // public ApplicationUser User { get; set; }
 
     }
 }
