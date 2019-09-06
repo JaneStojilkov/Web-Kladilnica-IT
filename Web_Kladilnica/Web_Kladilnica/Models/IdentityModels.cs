@@ -20,6 +20,8 @@ namespace Web_Kladilnica.Models
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+       public DbSet<Game> games { get; set; }
+        public DbSet<Ticket> tickets { get; set; }
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
