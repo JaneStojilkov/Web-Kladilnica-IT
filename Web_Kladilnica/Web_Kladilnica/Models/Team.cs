@@ -7,6 +7,7 @@ namespace Web_Kladilnica.Models
 {
     public class Team
     {
+        public int ID { get; set; }
         public string Name { get; set; }
         public int score { get; set; }
         public string BadgeUrl { get; set; }

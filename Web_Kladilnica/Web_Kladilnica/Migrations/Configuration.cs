@@ -10,7 +10,6 @@ namespace Web_Kladilnica.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
-            ContextKey = "Web_Kladilnica.Models.ApplicationDbContext";
         }
 
         protected override void Seed(Web_Kladilnica.Models.ApplicationDbContext context)

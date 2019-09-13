@@ -22,6 +22,7 @@ namespace Web_Kladilnica.Models
     {
        public DbSet<Game> Games { get; set; }
         public DbSet<Ticket> tickets { get; set; }
+        public DbSet<Team> Teams { get; set; }
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
