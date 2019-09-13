@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Web_Kladilnica.Models.Game>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "CreateGame")
 </p>
 <table class="table">
     <tr>
@@ -83,10 +83,10 @@
             @Html.DisplayFor(modelItem => item.selectedCoefficient)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Team1)
+            @Html.DisplayFor(modelItem => item.Team1.Name)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Team2)
+            @Html.DisplayFor(modelItem => item.Team2.Name)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |

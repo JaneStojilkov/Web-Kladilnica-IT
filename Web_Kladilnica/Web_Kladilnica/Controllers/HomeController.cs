@@ -37,5 +37,30 @@ namespace Web_Kladilnica.Controllers
 
             return View();
         }
+        public ActionResult CreateGame()
+        {
+            GameCreateModel model=new GameCreateModel();
+            model.teams = db.Teams.ToList();
+            return View(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateGame([Bind(Include = "game")] GameCreateModel gamecreate)
+        {
+            DateTime dat = DateTime.Now;
+            Game game1 = gamecreate.game;
+            game1.StartTime = dat;
+            game1.EndTime = dat.AddMinutes(90);
+            game1.Completed = false;
+            game1.HalfTime = false;
+            game1.selectedCoefficient = 0;
+            game1.team1Score = 0;
+            game1.team2Score = 0;
+            game1.Time = 0;
+            db.Games.Add(game1);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+
+        }
     }
 }

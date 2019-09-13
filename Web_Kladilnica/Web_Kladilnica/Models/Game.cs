@@ -21,14 +21,16 @@ namespace Web_Kladilnica.Models
         public string League { get; set; }
         public int selectedCoefficient { get; set; }
         public Team Team1 { get; set; }
+        public int team1Score { get; set; }
+        public int team2Score { get; set; }
         public Team Team2 { get; set; }
         public int Result
         {
             get
             {
-                if (Team1.score > Team2.score)
+                if (team1Score > team2Score)
                     return 1;
-                else if (Team1.score < Team2.score)
+                else if (team1Score < team2Score)
                     return 2;
                 return 0;
             }
