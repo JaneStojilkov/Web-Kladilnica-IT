@@ -4,88 +4,15 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<script src="~/Scripts/jquery-1.7.1.min.js" type="text/javascript"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js" type="text/javascript"></script>
 
+<div id="divGames">
 
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Coefficient1)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Coefficient2)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Coefficient3)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.StartTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EndTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Completed)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Time)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.HalfTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Team1)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Team2)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.League)
-        </th>
-        <th></th>
-    </tr>
+</div>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Coefficient1)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Coefficient2)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Coefficient3)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.StartTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EndTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Completed)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Time)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.HalfTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Team1)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Team2)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.League)
-        </td>
-    @*  <td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id = item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id = item.ID })
-        </td>*@
-    </tr>
+@Html.Action("GamesPartial","Home")
+
+@section scripts{
+    @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.js")
 }
-
-</table>

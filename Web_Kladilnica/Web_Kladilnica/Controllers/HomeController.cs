@@ -15,7 +15,13 @@ namespace Web_Kladilnica.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
         public ActionResult Index()
         {
-            return View(db.Games.ToList());
+            return View();
+        }
+
+        public PartialViewResult GamesPartial()
+        {
+            List<Game> g = db.Games.ToList();
+            return PartialView("_GamesView", g);
         }
 
         public ActionResult About()
