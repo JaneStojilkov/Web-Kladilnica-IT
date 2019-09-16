@@ -17,12 +17,13 @@ namespace Web_Kladilnica.Controllers
         {
             return View();
         }
-
-        public PartialViewResult GamesPartial()
+        [HttpPost]
+        public PartialViewResult GamesPartial(string izbor)
         {
-            var g = db.Games.Include(m=>m.Team1).Include(m=>m.Team2);
+            var g = db.Games.Where(m=>m.Sport.Equals(izbor)).Include(m=>m.Team1).Include(m=>m.Team2);
             return PartialView("_GamesView", g.ToList());
         }
+        
 
         public ActionResult About()
         {
@@ -53,6 +54,7 @@ namespace Web_Kladilnica.Controllers
             game1.StartTime = dat;
             game1.EndTime = dat.AddMinutes(90);
             game1.Completed = false;
+            
             game1.HalfTime = false;
             game1.selectedCoefficient = 0;
             game1.team1Score = 0;

@@ -1,75 +1,59 @@
 ﻿@model IEnumerable<Web_Kladilnica.Models.Game>
 
-<p>
-    @Html.ActionLink("Create New", "CreateGame")
-</p>
-<table class="table">
+
+<table class="table table-condensed">
     <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.StartTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EndTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Time)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Coefficient1)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Coefficient2)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Coefficient3)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.League)
-        </th>
         <th>
             @Html.DisplayNameFor(model => model.Team1)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Team2)
         </th>
+        <th>
+            Score
+        </th>
+        <th>
+            Time
+        </th>
+        <th>
+            1 x 2
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Completed)
+        </th>
+
         <th></th>
     </tr>
 
 @foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.StartTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EndTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Time)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Coefficient1)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Coefficient2)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Coefficient3)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.League)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Team1.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Team2.Name)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-        </td>
-    </tr>
+<tr>
+    <td>
+        <img src="@item.Team1.BadgeUrl" width="35px" height="35px" />
+        @Html.DisplayFor(modelItem => item.Team1.Name)
+    </td>
+    <td>
+        <img src="@item.Team2.BadgeUrl" width="35px" height="35px" />
+        @Html.DisplayFor(modelItem => item.Team2.Name)
+    </td>
+    <td>
+        @item.team1Score:@item.team2Score
+    </td>
+    <td>
+        @DateTime.Now.Subtract(item.StartTime).Minutes
+    </td>
+    <td>
+        @item.Coefficient1.ToString()/@item.Coefficient2.ToString()/@item.Coefficient3.ToString()
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Completed)
+    </td>
+
+    <td>
+        @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+        @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+        @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+    </td>
+</tr>
 }
 
 </table>

@@ -18,7 +18,7 @@ namespace Web_Kladilnica.Models
         public GameCreateModel()
         {
             teams = new List<Team>();
-            game = new Game();
+            
         }
     }
 }
