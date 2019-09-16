@@ -20,8 +20,8 @@ namespace Web_Kladilnica.Controllers
 
         public PartialViewResult GamesPartial()
         {
-            List<Game> g = db.Games.ToList();
-            return PartialView("_GamesView", g);
+            var g = db.Games.Include(m=>m.Team1).Include(m=>m.Team2);
+            return PartialView("_GamesView", g.ToList());
         }
 
         public ActionResult About()
@@ -45,8 +45,9 @@ namespace Web_Kladilnica.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateGame([Bind(Include = "game")] GameCreateModel gamecreate)
+        public ActionResult CreateGame([Bind(Include = "game,team1ID,team2ID")] GameCreateModel gamecreate)
         {
+
             DateTime dat = DateTime.Now;
             Game game1 = gamecreate.game;
             game1.StartTime = dat;
@@ -57,9 +58,11 @@ namespace Web_Kladilnica.Controllers
             game1.team1Score = 0;
             game1.team2Score = 0;
             game1.Time = 0;
+            game1.Team1 = db.Teams.Find(gamecreate.team1ID);
+            game1.Team2 = db.Teams.Find(gamecreate.team2ID);
             db.Games.Add(game1);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+            db.SaveChanges();
+            return RedirectToAction("Index");
 
         }
     }
