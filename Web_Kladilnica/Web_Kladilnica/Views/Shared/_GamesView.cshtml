@@ -45,9 +45,11 @@
                 @DateTime.Now.Subtract(item.StartTime).Minutes
             </td>
             <td>
-                <input type="button" value="@item.Coefficient1.ToString()" id="c1" name="@item.ID" onclick="ClickCoef()" />
-                <input type="button" value="@item.Coefficient2.ToString()" id="c2" name="@item.ID" onclick="ClickCoef()" />
-                <input type="button" value="@item.Coefficient3.ToString()" id="c3" name="@item.ID" onclick="ClickCoef()" />
+                <div class="btn-group">
+                    <input type="button" value="@item.Coefficient1.ToString()" id="c1" name="@item.ID" class="btns" onclick="ClickCoef()" />
+                    <input type="button" value="@item.Coefficient2.ToString()" id="c2" name="@item.ID" class="btns" onclick="ClickCoef()" />
+                    <input type="button" value="@item.Coefficient3.ToString()" id="c3" name="@item.ID" class="btns" onclick="ClickCoef()" />
+                </div>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Completed)
@@ -64,13 +66,17 @@
 </table>
 <input type="text" id="testerC" />
 <input type="text" id="testerId" />
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 <script>
+
     var TypeOfCoef = [];
     var GameId = [];
     var i = 0;
     function ClickCoef() {
-        //alert(event.target.id);
-        //  alert(event.target.name);
+    
         var flag = false;
         var StoppedId;
         for (var j = 0; j < i; j++) {
@@ -83,13 +89,20 @@
         if (flag == false) {
             GameId[i] = event.target.name.toString();
             TypeOfCoef[i] = event.target.id.toString();
-
             i++;
         }
         else {
             TypeOfCoef[StoppedId] = event.target.id.toString();
         }
-        document.getElementById("testerC").value = TypeOfCoef.join('\n') ;
-        document.getElementById("testerId").value =  GameId.join('\n');
+        document.getElementById("testerC").value = TypeOfCoef.join('\n');
+        document.getElementById("testerId").value = GameId.join('\n');
     }
+
+   $(document).ready(function () {
+       $('.btns').on('click', function () {
+           $(this).siblings().css("backgroundColor", "gray");
+           
+            $(this).css("backgroundColor", "yellow");
+       });
+   });
 </script>
