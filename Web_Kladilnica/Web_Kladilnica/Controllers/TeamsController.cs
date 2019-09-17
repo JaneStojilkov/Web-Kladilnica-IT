@@ -92,7 +92,7 @@ namespace Web_Kladilnica.Controllers
         }
 
         // GET: Teams/Delete/5
-        [Authorize(Roles ="Administrator")]
+        [Authorize(Roles = "Administrator")]
         public ActionResult Delete(int? id)
         {
             if (id == null)

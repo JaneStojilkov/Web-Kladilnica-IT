@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<Web_Kladilnica.Models.Game>
 
 
+
 <table class="table table-condensed">
     <tr>
         <th>
@@ -25,35 +26,70 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-<tr>
-    <td>
-        <img src="@item.Team1.BadgeUrl" width="35px" height="35px" />
-        @Html.DisplayFor(modelItem => item.Team1.Name)
-    </td>
-    <td>
-        <img src="@item.Team2.BadgeUrl" width="35px" height="35px" />
-        @Html.DisplayFor(modelItem => item.Team2.Name)
-    </td>
-    <td>
-        @item.team1Score:@item.team2Score
-    </td>
-    <td>
-        @DateTime.Now.Subtract(item.StartTime).Minutes
-    </td>
-    <td>
-        @item.Coefficient1.ToString()/@item.Coefficient2.ToString()/@item.Coefficient3.ToString()
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Completed)
-    </td>
+    @foreach (var item in Model)
+    {
+        var IDGame = item.ID;
+        <tr>
+            <td>
+                <img src="@item.Team1.BadgeUrl" width="35px" height="35px" />
+                @Html.DisplayFor(modelItem => item.Team1.Name)
+            </td>
+            <td>
+                <img src="@item.Team2.BadgeUrl" width="35px" height="35px" />
+                @Html.DisplayFor(modelItem => item.Team2.Name)
+            </td>
+            <td>
+                @item.team1Score:@item.team2Score
+            </td>
+            <td>
+                @DateTime.Now.Subtract(item.StartTime).Minutes
+            </td>
+            <td>
+                <input type="button" value="@item.Coefficient1.ToString()" id="c1" name="@item.ID" onclick="ClickCoef()" />
+                <input type="button" value="@item.Coefficient2.ToString()" id="c2" name="@item.ID" onclick="ClickCoef()" />
+                <input type="button" value="@item.Coefficient3.ToString()" id="c3" name="@item.ID" onclick="ClickCoef()" />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Completed)
+            </td>
 
-    <td>
-        @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
-        @Html.ActionLink("Details", "Details", new { id = item.ID }) |
-        @Html.ActionLink("Delete", "Delete", new { id = item.ID })
-    </td>
-</tr>
-}
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+            </td>
+        </tr>
+    }
 
 </table>
+<input type="text" id="testerC" />
+<input type="text" id="testerId" />
+<script>
+    var TypeOfCoef = [];
+    var GameId = [];
+    var i = 0;
+    function ClickCoef() {
+        //alert(event.target.id);
+        //  alert(event.target.name);
+        var flag = false;
+        var StoppedId;
+        for (var j = 0; j < i; j++) {
+            if (GameId[j] == event.target.name.toString()) {
+                flag = true;
+                StoppedId = j;
+                break;
+            }
+        }
+        if (flag == false) {
+            GameId[i] = event.target.name.toString();
+            TypeOfCoef[i] = event.target.id.toString();
+
+            i++;
+        }
+        else {
+            TypeOfCoef[StoppedId] = event.target.id.toString();
+        }
+        document.getElementById("testerC").value = TypeOfCoef.join('\n') ;
+        document.getElementById("testerId").value =  GameId.join('\n');
+    }
+</script>
