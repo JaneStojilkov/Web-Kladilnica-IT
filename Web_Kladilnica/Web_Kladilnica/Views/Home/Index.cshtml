@@ -14,7 +14,7 @@
     <li role="presentation" sport="Baseball"><a href="#" onclick="loadGames('Baseball')" ><i class="fas fa-baseball-ball"></i> Baseball</a></li>
 </ul>
 <div class="igri">
-    @Html.Action("GamesPartial", "Home", new { izbor = "Football" })
+    @Html.Action("GamesPartial","Home",new { izbor="Football"})
 </div>
 @section scripts{
     @Scripts.Render("~/bundles/jquery")

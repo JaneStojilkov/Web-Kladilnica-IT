@@ -17,7 +17,7 @@ namespace Web_Kladilnica.Controllers
         {
             return View();
         }
-        [HttpPost]
+       
         public PartialViewResult GamesPartial(string izbor)
         {
             var g = db.Games.Where(m=>m.Sport.Equals(izbor)).Include(m=>m.Team1).Include(m=>m.Team2);
