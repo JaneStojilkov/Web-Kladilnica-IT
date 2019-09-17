@@ -36,6 +36,7 @@ namespace Web_Kladilnica.Controllers
         }
 
         // GET: Teams/Create
+        [Authorize(Roles = "Administrator")]
         public ActionResult Create()
         {
             return View();
@@ -59,6 +60,7 @@ namespace Web_Kladilnica.Controllers
         }
 
         // GET: Teams/Edit/5
+        [Authorize(Roles = "Administrator")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -90,6 +92,7 @@ namespace Web_Kladilnica.Controllers
         }
 
         // GET: Teams/Delete/5
+        [Authorize(Roles ="Administrator")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -107,6 +110,7 @@ namespace Web_Kladilnica.Controllers
         // POST: Teams/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public ActionResult DeleteConfirmed(int id)
         {
             Team team = db.Teams.Find(id);

@@ -38,6 +38,7 @@ namespace Web_Kladilnica.Controllers
 
             return View();
         }
+        [Authorize(Roles = "Administrator")]
         public ActionResult CreateGame()
         {
             GameCreateModel model=new GameCreateModel();
