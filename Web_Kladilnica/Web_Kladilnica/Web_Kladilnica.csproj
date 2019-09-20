@@ -184,14 +184,20 @@
     <Compile Include="Migrations\201909132030467_teamChanges.Designer.cs">
       <DependentUpon>201909132030467_teamChanges.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201909201849546_idfk.cs" />
+    <Compile Include="Migrations\201909201849546_idfk.Designer.cs">
+      <DependentUpon>201909201849546_idfk.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Game.cs" />
+    <Compile Include="Models\GameArrays.cs" />
     <Compile Include="Models\GameCreateModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Team.cs" />
     <Compile Include="Models\Ticket.cs" />
+    <Compile Include="Models\TicketGamesView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -258,6 +264,7 @@
     <Content Include="Views\Teams\Edit.cshtml" />
     <Content Include="Views\Teams\Index.cshtml" />
     <Content Include="Views\Home\CreateGame.cshtml" />
+    <Content Include="Views\Home\CreatingTicket.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -278,6 +285,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201909132030467_teamChanges.resx">
       <DependentUpon>201909132030467_teamChanges.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909201849546_idfk.resx">
+      <DependentUpon>201909201849546_idfk.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

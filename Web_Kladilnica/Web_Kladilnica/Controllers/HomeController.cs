@@ -68,5 +68,35 @@ namespace Web_Kladilnica.Controllers
             return RedirectToAction("Index");
 
         }
+        [HttpPost]
+        public ActionResult CreatingTicket(TicketGamesView tick)
+        {
+            Ticket ticket = new Ticket();
+            string[] idgame = tick.ids.Split(',');
+            string[] coefgame = tick.gameCoef.Split(',');
+           List<Game> selGames = new List<Game>();
+            for (int i = 0; i <idgame.Length; i++)
+            {
+                int tempID = Convert.ToInt32(idgame[i]);
+                Game tempGame = db.Games.Find(tempID);
+                if (coefgame[i].ToString().Equals("c1"))
+                {
+                    tempGame.selectedCoefficient = 1;
+                }
+                else if (coefgame[i].ToString().Equals("c2"))
+                {
+                    tempGame.selectedCoefficient = 0;
+                }
+                else
+                {
+                    tempGame.selectedCoefficient = 2;
+                }
+                selGames.Add(tempGame);
+            }
+             return PartialView("CreatingTicket", selGames);
+
+    
+        }
+
     }
 }

@@ -1,4 +1,4 @@
-﻿
+﻿@model  Web_Kladilnica.Models.TicketGamesView
 
 @{
     ViewBag.Title = "Index";
@@ -10,42 +10,81 @@
 
 <ul class="nav nav-tabs">
     <li role="presentation" class="active" sport="Football"><a href="#" onclick="loadGames('Football')"><i class="fas fa-futbol"></i> Football</a></li>
-    <li role="presentation" sport="Basketball"><a href="#" onclick="loadGames('Basketball')" ><i class="fas fa-basketball-ball"></i> Basketball</a></li>
-    <li role="presentation" sport="Baseball"><a href="#" onclick="loadGames('Baseball')" ><i class="fas fa-baseball-ball"></i> Baseball</a></li>
+    <li role="presentation" sport="Basketball"><a href="#" onclick="loadGames('Basketball')"><i class="fas fa-basketball-ball"></i> Basketball</a></li>
+    <li role="presentation" sport="Baseball"><a href="#" onclick="loadGames('Baseball')"><i class="fas fa-baseball-ball"></i> Baseball</a></li>
 </ul>
 <div class="igri">
-    @Html.Action("GamesPartial","Home",new { izbor="Football"})
+    @Html.Action("GamesPartial", "Home", new { izbor = "Football" })
 </div>
+<button onclick="updateStuff()">Click</button>
+<br />
+@using (Html.BeginForm("CreatingTicket", "Home"))
+{
+    @Html.HiddenFor(m => m.ids)
+    @Html.HiddenFor(m => m.gameCoef)
+    <button type="submit" class="btn btn-primary" onclick="updateStuff()">Preview </button>
+
+}
 @section scripts{
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-<script src="~/Scripts/jquery-3.3.1.js"></script>
+    <script src="~/Scripts/jquery-3.3.1.js"></script>
+
     <script>
+        var TypeOfCoef = [];
+        var GameId = [];
+        var i = 0;
+       const ClickCoef = function(){
+
+            var flag = false;
+            var StoppedId;
+            for (var j = 0; j < i; j++) {
+                if (GameId[j] == event.target.name.toString()) {
+                    flag = true;
+                    StoppedId = j;
+                    break;
+                }
+            }
+            if (flag == false) {
+                GameId[i] = event.target.name.toString();
+                TypeOfCoef[i] = event.target.id.toString();
+                i++;
+            }
+            else {
+                TypeOfCoef[StoppedId] = event.target.id.toString();
+            }
+        }
+        const updateStuff = function(){
+            document.getElementById("ids").value = GameId;
+            document.getElementById("gameCoef").value = TypeOfCoef;
+        }
         var aktivno = $(".active").attr("sport");
-       const loadGames=function(tip) {
+        const loadGames = function (tip) {
             $.ajax({
-                type:"POST",
+                type: "POST",
                 url: "/Home/GamesPartial/",
-                data: {izbor:tip},
+                data: { izbor: tip },
                 success: function (result) {
                     $(".igri").html(result);
+
                 }
-
-
-
             })
         }
-        $(document).ready(function () {
-            
-            $("li").click(function () {
-                aktivno = $(this).attr("sport");
-                $(this).addClass("active").siblings().removeClass("active")
-                
-            })
-           var interval= setInterval(function () { loadGames(aktivno); }, 60 * 1000);
 
-        });
-        
+            $(document).ready(function () {
+
+                $("li").click(function () {
+                    aktivno = $(this).attr("sport");
+                    $(this).addClass("active").siblings().removeClass("active");
+
+                })
+                
+
+
+            });
+
+
+
 
     </script>
 }

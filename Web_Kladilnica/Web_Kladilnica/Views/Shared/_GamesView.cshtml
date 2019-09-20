@@ -46,9 +46,9 @@
             </td>
             <td>
                 <div class="btn-group">
-                    <input type="button" value="@item.Coefficient1.ToString()" id="c1" name="@item.ID" class="btns" onclick="ClickCoef()" />
-                    <input type="button" value="@item.Coefficient2.ToString()" id="c2" name="@item.ID" class="btns" onclick="ClickCoef()" />
-                    <input type="button" value="@item.Coefficient3.ToString()" id="c3" name="@item.ID" class="btns" onclick="ClickCoef()" />
+                    <input type="button" value="@item.Coefficient1.ToString()" id="c1" name="@item.ID" onclick="ClickCoef()" class="btns"  />
+                    <input type="button" value="@item.Coefficient2.ToString()" id="c2" name="@item.ID" onclick="ClickCoef()" class="btns" />
+                    <input type="button" value="@item.Coefficient3.ToString()" id="c3" name="@item.ID" onclick="ClickCoef()" class="btns" />
                 </div>
             </td>
             <td>
@@ -66,13 +66,14 @@
 </table>
 <input type="text" id="testerC" />
 <input type="text" id="testerId" />
-<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 <script>
-
-    var TypeOfCoef = [];
+                        $('.btns').on('click', function () {
+                         $(this).addClass("btn-success").siblings().removeClass("btn-success");
+                    })
+ /*   var TypeOfCoef = [];
     var GameId = [];
     var i = 0;
     function ClickCoef() {
@@ -100,9 +101,8 @@
 
    $(document).ready(function () {
        $('.btns').on('click', function () {
-           $(this).siblings().css("backgroundColor", "gray");
            
-            $(this).css("backgroundColor", "yellow");
+           $(this).addClass("btn-success").siblings().removeClass("btn-success");
        });
-   });
+   });*/
 </script>
