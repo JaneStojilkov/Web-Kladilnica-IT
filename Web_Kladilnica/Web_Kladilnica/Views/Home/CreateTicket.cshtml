@@ -1,0 +1,106 @@
+﻿@model Web_Kladilnica.Models.Ticket
+
+@{
+    ViewBag.Title = "CreateTicket";
+}
+
+<h2>CreateTicket</h2>
+
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Ticket</h4>
+        <hr />
+        <div class="panel-primary">
+            <table class="table-striped">
+                <tr>
+                    <th>Team 1</th>
+                    <th>Team 2</th>
+                    <th>Coefficient</th>
+                    <th>Result</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                </tr>
+             @foreach(var item in Model.games)
+             { 
+            <tr>
+                <td>
+                    <img src="@item.Team1.BadgeUrl" width="35px" height="35px" />
+                    @Html.DisplayFor(modelItem => item.Team1.Name)
+                </td>
+                <td>
+                    <img src="@item.Team2.BadgeUrl" width="35px" height="35px" />
+                    @Html.DisplayFor(modelItem => item.Team2.Name)
+                </td>
+                <td>
+                    @if (item.selectedCoefficient == 1)
+                    {
+                        @item.Coefficient1
+                    }
+                    @if (item.selectedCoefficient == 0)
+                    {
+                        @item.Coefficient2
+                    }
+                    @if (item.selectedCoefficient == 2)
+                    {
+                        @item.Coefficient3
+                    }
+
+
+                </td>
+                <td>
+                    @if (!item.Completed)
+                    {
+                        <p>Game not completed yet.</p>
+                    }
+                    else
+                    {
+                        if(item.Result == 2)
+                        {
+                            <p>X</p>
+                        }
+                        else
+                        {
+                            @item.Result}
+                    }
+
+                </td>
+                <td>
+                    @item.StartTime.Date @item.StartTime.Hour:@item.StartTime.Minute
+                </td>
+                <td>
+                    @item.EndTime.Date @item.EndTime.Hour:@item.EndTime.Minute
+                </td>
+            </tr>
+             }
+            </table>
+
+        </div>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.moneyInvested, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.moneyInvested, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.moneyInvested, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

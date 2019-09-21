@@ -1,99 +1,151 @@
-﻿@model IEnumerable<Web_Kladilnica.Models.Game>
+﻿@model Web_Kladilnica.Models.Ticket
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.StartTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EndTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Completed)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Time)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.HalfTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Sport)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Coefficient1)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Coefficient2)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Coefficient3)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.League)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.selectedCoefficient)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.team1Score)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.team2Score)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.StartTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EndTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Completed)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Time)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.HalfTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Sport)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Coefficient1)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Coefficient2)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Coefficient3)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.League)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.selectedCoefficient)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.team1Score)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.team2Score)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-        </td>
-    </tr>
+@{
+    ViewBag.Title = "CreateTicket";
 }
 
-</table>
+<h2>CreateTicket</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Ticket</h4>
+        <hr />
+            <table class="table table-striped">
+                <tr>
+                    <th>Team 1</th>
+                    <th>Team 2</th>
+                    <th>Coefficient</th>
+                    <th>Selected outcome</th>
+                    <th>Result</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                </tr>
+                <tr>
+                    @foreach (var game in Model.games)
+                    {
+                    <tr>
+                        <td>
+                            <img src="@game.Team1.BadgeUrl" width="35px" height="35px" />
+                            @Html.DisplayFor(modelItem => game.Team1.Name)
+                        </td>
+                        <td>
+                            <img src="@game.Team2.BadgeUrl" width="35px" height="35px" />
+                            @Html.DisplayFor(modelItem => game.Team2.Name)
+                        </td>
+                        <td>
+                            @if (game.selectedCoefficient == 1)
+                {
+                                @game.Coefficient1
+                }
+                            @if (game.selectedCoefficient == 0)
+                {
+                                @game.Coefficient2 
+                }
+                            @if (game.selectedCoefficient == 2)
+                {
+                                @game.Coefficient3
+                }
+
+
+                        </td>
+                        <td>
+                            @if (game.selectedCoefficient == 1)
+                            {
+                               <span>1</span>
+                            }
+                            @if (game.selectedCoefficient == 0)
+                            {
+                                <span>X</span>
+                            }
+                            @if (game.selectedCoefficient == 2)
+                            {
+                                <span>2</span>
+                            }
+                        </td>
+                        <td>
+                            @if (!game.Completed)
+                            {
+                                <p>Game not completed yet.</p>
+                            }
+                            else
+                            {
+                                if (game.Result == 0)
+                                {
+                                    <p>Even</p>
+                                }
+
+                                if (game.Result == 1)
+                                {
+                                    @game.Team1.Name <span>Victory</span>
+                                }
+                                if (game.Result == 2)
+                                {
+                                    @game.Team2.Name <span>Victory</span>
+                                }
+
+                            }
+
+                        </td>
+                        <td>
+                            @game.StartTime.Day/@game.StartTime.Month/@game.StartTime.Year @game.StartTime.Hour:@game.StartTime.Minute
+                        </td>
+                        <td>
+                            @game.EndTime.Day/@game.EndTime.Month/@game.EndTime.Year @game.EndTime.Hour:@game.EndTime.Minute
+                        </td>
+                    </tr>
+                }
+                </table>
+            <div class="form-group">
+                @Html.LabelFor(model => model.totalCoefficient, htmlAttributes: new { @class = "control-label col-md-2" })
+                <span class="form-control-static"> @Model.totalCoefficient</span>
+            </div>
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.moneyInvested, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.moneyInvested, new { htmlAttributes = new { @class = "form-control investiranje" } })
+                @Html.ValidationMessageFor(model => model.moneyInvested, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Future Winnnings</label>
+            <input type="text" disabled class="form-control winnings" value="0" />
+        </div>
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script>
+    $("#moneyInvested").change(function () {
+        
+        var moneyinv = $(this).val();
+        var money;
+        if (!isNaN(moneyinv)){
+            money = moneyinv *@Model.totalCoefficient;
+                $(".winnings").val(money);
+        }
+        
+    })
+        $(document).ready(function () {
+            $("#moneyInvested").change();
+        })
+    </script>
+}

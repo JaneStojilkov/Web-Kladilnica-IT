@@ -35,5 +35,10 @@ namespace Web_Kladilnica.Models
                 return 0;
             }
         }
+        public Game()
+        {
+            HalfTime = false;
+            Completed = false;
+        }
     }
 }

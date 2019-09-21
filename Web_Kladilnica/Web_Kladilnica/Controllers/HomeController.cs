@@ -75,25 +75,35 @@ namespace Web_Kladilnica.Controllers
             string[] idgame = tick.ids.Split(',');
             string[] coefgame = tick.gameCoef.Split(',');
            List<Game> selGames = new List<Game>();
+            float totalCoef = 0;
             for (int i = 0; i <idgame.Length; i++)
             {
                 int tempID = Convert.ToInt32(idgame[i]);
-                Game tempGame = db.Games.Find(tempID);
-                if (coefgame[i].ToString().Equals("c1"))
+                Game tempGame =db.Games.Include(m=>m.Team1).Include(m => m.Team2).SingleOrDefault(m=>m.ID==tempID);
+                if (tempGame != null)
                 {
-                    tempGame.selectedCoefficient = 1;
+                    if (coefgame[i].ToString().Equals("c1"))
+                    {
+                        totalCoef += tempGame.Coefficient1;
+                        tempGame.selectedCoefficient = 1;
+                    }
+                    else if (coefgame[i].ToString().Equals("c2"))
+                    {
+                        totalCoef += tempGame.Coefficient2;
+                        tempGame.selectedCoefficient = 0;
+                    }
+                    else
+                    {
+                        totalCoef += tempGame.Coefficient3;
+                        tempGame.selectedCoefficient = 2;
+                    }
+                    selGames.Add(tempGame);
                 }
-                else if (coefgame[i].ToString().Equals("c2"))
-                {
-                    tempGame.selectedCoefficient = 0;
-                }
-                else
-                {
-                    tempGame.selectedCoefficient = 2;
-                }
-                selGames.Add(tempGame);
             }
-             return PartialView("CreatingTicket", selGames);
+            ticket.games = selGames;
+            ticket.totalCoefficient = totalCoef;
+            ticket.time = DateTime.Now;
+            return View(ticket);
 
     
         }
