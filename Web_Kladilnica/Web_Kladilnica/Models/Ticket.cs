@@ -11,6 +11,9 @@ namespace Web_Kladilnica.Models
         public List<Game> games { get; set; }
         public float moneyInvested { get; set; }
         public float totalCoefficient {get;set;}
+
+        //TODO Ne biva taka sekojpat se kreira novi games so drugi selected koeficient brisi go selectedcoefficient pravi so guesses i so virtual list games ne so vakov posle bi trebalo da rabote
+        public List<int> guesses { get; set; }
         public float WinMoney { get {
              return  moneyInvested* totalCoefficient;
              
@@ -30,6 +33,7 @@ namespace Web_Kladilnica.Models
         public Ticket()
         {
             games = new List<Game>();
+            time = DateTime.Now;
         }
     }
 }

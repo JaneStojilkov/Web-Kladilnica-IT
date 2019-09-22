@@ -1,0 +1,102 @@
+﻿@model IEnumerable<Web_Kladilnica.Models.Ticket>
+
+@{
+    ViewBag.Title = "ViewTickets";
+}
+
+<h2>ViewTickets</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.moneyInvested)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.totalCoefficient)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.time)
+        </th>
+
+    </tr>
+
+    @foreach (var item in Model)
+    {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.moneyInvested)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.totalCoefficient)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.time)
+    </td>
+    <td>
+        <table class="table table-condensed">
+            @foreach (var game in item.games)
+            {
+                <tr>
+                    <td>
+                        <img src="@game.Team1.BadgeUrl" width="35px" height="35px" />
+                        @Html.DisplayFor(modelItem => game.Team1.Name)
+                    </td>
+                    <td>
+                        <img src="@game.Team2.BadgeUrl" width="35px" height="35px" />
+                        @Html.DisplayFor(modelItem => game.Team2.Name)
+                    </td>
+                    <td>
+                        @if (game.selectedCoefficient == 1)
+                        {
+                            @game.Coefficient1
+                        }
+                        @if (game.selectedCoefficient == 0)
+                        {
+                            @game.Coefficient2
+                        }
+                        @if (game.selectedCoefficient == 2)
+                        {
+                            @game.Coefficient3
+                        }
+
+
+                    </td>
+                    <td>
+                        @if (!game.Completed)
+                        {
+                            <p>Game not completed yet.</p>
+                        }
+                        else
+                        {
+                            if (game.Result == 2)
+                            {
+                                <p>X</p>
+                            }
+                            else
+                            {
+                                @game.Result
+                            }
+                        }
+
+
+                    </td>
+                </tr>
+
+            }
+        </table>
+    </td>
+
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                </td>
+            </tr>
+
+        }
+
+
+        </table>

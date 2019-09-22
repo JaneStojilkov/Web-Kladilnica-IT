@@ -192,16 +192,24 @@
     <Compile Include="Migrations\201909212031152_ticketChanges.Designer.cs">
       <DependentUpon>201909212031152_ticketChanges.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201909221728443_userShit.cs" />
+    <Compile Include="Migrations\201909221728443_userShit.Designer.cs">
+      <DependentUpon>201909221728443_userShit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909221743569_userchanges.cs" />
+    <Compile Include="Migrations\201909221743569_userchanges.Designer.cs">
+      <DependentUpon>201909221743569_userchanges.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Game.cs" />
-    <Compile Include="Models\GameArrays.cs" />
     <Compile Include="Models\GameCreateModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Team.cs" />
     <Compile Include="Models\Ticket.cs" />
     <Compile Include="Models\TicketGamesView.cs" />
+    <Compile Include="Models\TicketListGamesView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -270,6 +278,7 @@
     <Content Include="Views\Home\CreateGame.cshtml" />
     <Content Include="Views\Home\CreatingTicket.cshtml" />
     <Content Include="Views\Home\CreateTicket.cshtml" />
+    <Content Include="Views\Home\ViewTickets.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -296,6 +305,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201909212031152_ticketChanges.resx">
       <DependentUpon>201909212031152_ticketChanges.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909221728443_userShit.resx">
+      <DependentUpon>201909221728443_userShit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909221743569_userchanges.resx">
+      <DependentUpon>201909221743569_userchanges.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

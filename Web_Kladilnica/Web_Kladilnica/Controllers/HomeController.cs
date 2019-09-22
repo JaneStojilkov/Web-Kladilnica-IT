@@ -7,12 +7,15 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Web_Kladilnica.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Web_Kladilnica.Controllers
 {
     public class HomeController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        private List<Game> games = new List<Game>();
         public ActionResult Index()
         {
             return View();
@@ -37,6 +40,10 @@ namespace Web_Kladilnica.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+        public void updateGames(List<Game> igri)
+        {
+            games = igri;
         }
         [Authorize(Roles = "Administrator")]
         public ActionResult CreateGame()
@@ -75,7 +82,7 @@ namespace Web_Kladilnica.Controllers
             string[] idgame = tick.ids.Split(',');
             string[] coefgame = tick.gameCoef.Split(',');
            List<Game> selGames = new List<Game>();
-            float totalCoef = 0;
+            float totalCoef =1;
             for (int i = 0; i <idgame.Length; i++)
             {
                 int tempID = Convert.ToInt32(idgame[i]);
@@ -84,17 +91,17 @@ namespace Web_Kladilnica.Controllers
                 {
                     if (coefgame[i].ToString().Equals("c1"))
                     {
-                        totalCoef += tempGame.Coefficient1;
+                        totalCoef *= tempGame.Coefficient1;
                         tempGame.selectedCoefficient = 1;
                     }
                     else if (coefgame[i].ToString().Equals("c2"))
                     {
-                        totalCoef += tempGame.Coefficient2;
+                        totalCoef *= tempGame.Coefficient2;
                         tempGame.selectedCoefficient = 0;
                     }
                     else
                     {
-                        totalCoef += tempGame.Coefficient3;
+                        totalCoef *= tempGame.Coefficient3;
                         tempGame.selectedCoefficient = 2;
                     }
                     selGames.Add(tempGame);
@@ -106,6 +113,20 @@ namespace Web_Kladilnica.Controllers
             return View(ticket);
 
     
+        }
+        [HttpPost]
+        public ActionResult CreateTicket([Bind(Include = "ID,games,moneyInvested,totalCoefficient,WinMoney,win,time")] Ticket ticket)
+        {
+            List<Ticket> tickets1 = new List<Ticket>();
+            
+            string userID = User.Identity.GetUserId();
+                ApplicationUser user = db.Users.Include(m => m.tickets).SingleOrDefault(m => m.Id == userID);
+                user.tickets.Add(ticket);
+                db.Entry(user).State = EntityState.Modified;
+                tickets1 = user.tickets ;
+            db.tickets.Add(ticket);
+            db.SaveChanges();
+            return View("ViewTickets",tickets1);
         }
 
     }

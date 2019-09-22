@@ -7,103 +7,126 @@
 <h2>CreateTicket</h2>
 
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("CreateTicket","Home"))
 {
-    @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
-        <h4>Ticket</h4>
-        <hr />
-            <table class="table table-striped">
-                <tr>
-                    <th>Team 1</th>
-                    <th>Team 2</th>
-                    <th>Coefficient</th>
-                    <th>Selected outcome</th>
-                    <th>Result</th>
-                    <th>Start Time</th>
-                    <th>End Time</th>
-                </tr>
-                <tr>
-                    @foreach (var game in Model.games)
+<div class="form-horizontal">
+    <h4>Ticket</h4>
+    <hr />
+    <table class="table table-striped">
+        <tr>
+            <th>Team 1</th>
+            <th>Team 2</th>
+            <th>Coefficient</th>
+            <th>Selected outcome</th>
+            <th>Result</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+        </tr>
+
+        @foreach (var game in Model.games)
+        {
+            <tr>
+                <td>
+                    <img src="@game.Team1.BadgeUrl" width="35px" height="35px" />
+                    @Html.DisplayFor(modelItem => game.Team1.Name)
+                </td>
+                <td>
+                    <img src="@game.Team2.BadgeUrl" width="35px" height="35px" />
+                    @Html.DisplayFor(modelItem => game.Team2.Name)
+                </td>
+                <td>
+                    @if (game.selectedCoefficient == 1)
                     {
-                    <tr>
-                        <td>
-                            <img src="@game.Team1.BadgeUrl" width="35px" height="35px" />
-                            @Html.DisplayFor(modelItem => game.Team1.Name)
-                        </td>
-                        <td>
-                            <img src="@game.Team2.BadgeUrl" width="35px" height="35px" />
-                            @Html.DisplayFor(modelItem => game.Team2.Name)
-                        </td>
-                        <td>
-                            @if (game.selectedCoefficient == 1)
-                {
-                                @game.Coefficient1
-                }
-                            @if (game.selectedCoefficient == 0)
-                {
-                                @game.Coefficient2 
-                }
-                            @if (game.selectedCoefficient == 2)
-                {
-                                @game.Coefficient3
-                }
+                        @game.Coefficient1
+                    }
+                    @if (game.selectedCoefficient == 0)
+                    {
+                        @game.Coefficient2
+                    }
+                    @if (game.selectedCoefficient == 2)
+                    {
+                        @game.Coefficient3
+                    }
 
 
-                        </td>
-                        <td>
-                            @if (game.selectedCoefficient == 1)
-                            {
-                               <span>1</span>
-                            }
-                            @if (game.selectedCoefficient == 0)
-                            {
-                                <span>X</span>
-                            }
-                            @if (game.selectedCoefficient == 2)
-                            {
-                                <span>2</span>
-                            }
-                        </td>
-                        <td>
-                            @if (!game.Completed)
-                            {
-                                <p>Game not completed yet.</p>
-                            }
-                            else
-                            {
-                                if (game.Result == 0)
-                                {
-                                    <p>Even</p>
-                                }
+                </td>
+                <td>
+                    @if (game.selectedCoefficient == 1)
+                    {
+                        <span>1</span>
+                    }
+                    @if (game.selectedCoefficient == 0)
+                    {
+                        <span>X</span>
+                    }
+                    @if (game.selectedCoefficient == 2)
+                    {
+                        <span>2</span>
+                    }
+                </td>
+                <td>
+                    @if (!game.Completed)
+                    {
+                        <p>Game not completed yet.</p>
+                    }
+                    else
+                    {
+                        if (game.Result == 0)
+                        {
+                            <p>Even</p>
+                        }
 
-                                if (game.Result == 1)
-                                {
-                                    @game.Team1.Name <span>Victory</span>
-                                }
-                                if (game.Result == 2)
-                                {
-                                    @game.Team2.Name <span>Victory</span>
-                                }
+                        if (game.Result == 1)
+                        {
+                            @game.Team1.Name <span>Victory</span>
+                        }
+                        if (game.Result == 2)
+                        {
+                            @game.Team2.Name <span>Victory</span>
+                        }
 
-                            }
+                    }
 
-                        </td>
-                        <td>
-                            @game.StartTime.Day/@game.StartTime.Month/@game.StartTime.Year @game.StartTime.Hour:@game.StartTime.Minute
-                        </td>
-                        <td>
-                            @game.EndTime.Day/@game.EndTime.Month/@game.EndTime.Year @game.EndTime.Hour:@game.EndTime.Minute
-                        </td>
-                    </tr>
-                }
-                </table>
-            <div class="form-group">
-                @Html.LabelFor(model => model.totalCoefficient, htmlAttributes: new { @class = "control-label col-md-2" })
-                <span class="form-control-static"> @Model.totalCoefficient</span>
-            </div>
+                </td>
+                <td>
+                    @game.StartTime.Day/@game.StartTime.Month/@game.StartTime.Year @game.StartTime.Hour:@game.StartTime.Minute
+                </td>
+                <td>
+                    @game.EndTime.Day/@game.EndTime.Month/@game.EndTime.Year @game.EndTime.Hour:@game.EndTime.Minute
+                </td>
+            </tr>
 
+        }
+    </table>
+    <div class="form-group">
+        @for (int i = 0; i < Model.games.Count; i++)
+        {
+            @Html.HiddenFor(model => model.games[i].ID)
+            @Html.HiddenFor(model => model.games[i].StartTime)
+            @Html.HiddenFor(model => model.games[i].EndTime)
+            @Html.HiddenFor(model => model.games[i].Team1.Name)
+            @Html.HiddenFor(model => model.games[i].Team1.BadgeUrl)
+            @Html.HiddenFor(model => model.games[i].Team1.ID)
+            @Html.HiddenFor(model => model.games[i].Team2.Name)
+            @Html.HiddenFor(model => model.games[i].Team2.BadgeUrl)
+            @Html.HiddenFor(model => model.games[i].Team2.ID)
+            @Html.HiddenFor(model => model.games[i].team1Score)
+            @Html.HiddenFor(model => model.games[i].team2Score)
+            @Html.HiddenFor(model => model.games[i].Sport)
+            @Html.HiddenFor(model => model.games[i].League)
+            @Html.HiddenFor(model => model.games[i].selectedCoefficient)
+            @Html.HiddenFor(model => model.games[i].Coefficient1)
+            @Html.HiddenFor(model => model.games[i].Coefficient2)
+            @Html.HiddenFor(model => model.games[i].Coefficient3)
+            @Html.HiddenFor(model => model.games[i].HalfTime)
+            @Html.HiddenFor(model => model.games[i].Completed)
+
+
+        }
+        <span class="form-control-static"> @Model.totalCoefficient</span>
+    </div>
+      
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
             @Html.LabelFor(model => model.moneyInvested, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -116,14 +139,15 @@
             <label class="control-label col-md-2">Future Winnnings</label>
             <input type="text" disabled class="form-control winnings" value="0" />
         </div>
-
-
+        @Html.HiddenFor(m => m.totalCoefficient, new { @class = "totCoef" })
+        @Html.HiddenFor(m => m.time, new { @class = "vreme" })
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Create" class="btn btn-default" onclick="updateGames(@Model.games)" />
             </div>
         </div>
     </div>
+  
 }
 
 <div>
@@ -135,6 +159,7 @@
 <script src="~/Scripts/jquery-3.3.1.min.js"></script>
     <script>
     $("#moneyInvested").change(function () {
+
         
         var moneyinv = $(this).val();
         var money;
@@ -144,8 +169,5 @@
         }
         
     })
-        $(document).ready(function () {
-            $("#moneyInvested").change();
-        })
     </script>
 }
