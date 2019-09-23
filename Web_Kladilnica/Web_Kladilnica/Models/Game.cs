@@ -11,15 +11,25 @@ namespace Web_Kladilnica.Models
         public int ID { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
-        public Boolean Completed { get; set; }
-        public float Time { get; set; }
-        public Boolean HalfTime { get; set; }
+        public Boolean Completed { get {
+                if ((int)DateTime.Now.Subtract(StartTime).TotalMinutes >= 105)
+                    return true;
+                return false;
+            } }
+        public int Time { get {
+
+                return (int)DateTime.Now.Subtract(StartTime).TotalMinutes;
+            } }
+        public Boolean HalfTime { get {
+                if (Time <= 45 || Time >= 60)
+                    return false;
+                return true;
+            } }
         public string Sport { get; set; }
-        public float Coefficient1 { get; set; }
-        public float Coefficient2 { get; set; }
-        public float Coefficient3 { get; set; }
+        public double Coefficient1 { get; set; }
+        public double Coefficient2 { get; set; }
+        public double Coefficient3 { get; set; }
         public string League { get; set; }
-        public int selectedCoefficient { get; set; }
         public Team Team1 { get; set; }
         public int team1Score { get; set; }
         public int team2Score { get; set; }
@@ -37,8 +47,6 @@ namespace Web_Kladilnica.Models
         }
         public Game()
         {
-            HalfTime = false;
-            Completed = false;
         }
     }
 }

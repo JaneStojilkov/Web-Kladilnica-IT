@@ -42,7 +42,22 @@
                 @item.team1Score:@item.team2Score
             </td>
             <td>
-                @DateTime.Now.Subtract(item.StartTime).Minutes
+                @if (item.HalfTime == true )
+                {
+                    <span>HT</span>
+                }
+                @if(item.HalfTime==false && item.Time >= 60 && !item.Completed)
+                {
+                    <span>@(item.Time-15)</span>
+                }
+                @if(item.HalfTime==false && item.Time < 60)
+                {
+                    <span>@item.Time</span>
+                }
+                @if (item.Completed)
+                {
+                    <span>FT</span>
+                }
             </td>
             <td>
                 <div class="btn-group">
@@ -71,36 +86,4 @@
                         $('.btns').on('click', function () {
                          $(this).addClass("btn-success").siblings().removeClass("btn-success");
                     })
- /*   var TypeOfCoef = [];
-    var GameId = [];
-    var i = 0;
-    function ClickCoef() {
-    
-        var flag = false;
-        var StoppedId;
-        for (var j = 0; j < i; j++) {
-            if (GameId[j] == event.target.name.toString()) {
-                flag = true;
-                StoppedId = j;
-                break;
-            }
-        }
-        if (flag == false) {
-            GameId[i] = event.target.name.toString();
-            TypeOfCoef[i] = event.target.id.toString();
-            i++;
-        }
-        else {
-            TypeOfCoef[StoppedId] = event.target.id.toString();
-        }
-        document.getElementById("testerC").value = TypeOfCoef.join('\n');
-        document.getElementById("testerId").value = GameId.join('\n');
-    }
-
-   $(document).ready(function () {
-       $('.btns').on('click', function () {
-           
-           $(this).addClass("btn-success").siblings().removeClass("btn-success");
-       });
-   });*/
 </script>

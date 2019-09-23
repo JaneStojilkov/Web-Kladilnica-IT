@@ -200,6 +200,22 @@
     <Compile Include="Migrations\201909221743569_userchanges.Designer.cs">
       <DependentUpon>201909221743569_userchanges.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201909231004418_fixingStuff.cs" />
+    <Compile Include="Migrations\201909231004418_fixingStuff.Designer.cs">
+      <DependentUpon>201909231004418_fixingStuff.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909231027012_doubleStuff.cs" />
+    <Compile Include="Migrations\201909231027012_doubleStuff.Designer.cs">
+      <DependentUpon>201909231027012_doubleStuff.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909231244010_stuff.cs" />
+    <Compile Include="Migrations\201909231244010_stuff.Designer.cs">
+      <DependentUpon>201909231244010_stuff.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909231254308_idkanymore.cs" />
+    <Compile Include="Migrations\201909231254308_idkanymore.Designer.cs">
+      <DependentUpon>201909231254308_idkanymore.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Game.cs" />
@@ -311,6 +327,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201909221743569_userchanges.resx">
       <DependentUpon>201909221743569_userchanges.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909231004418_fixingStuff.resx">
+      <DependentUpon>201909231004418_fixingStuff.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909231027012_doubleStuff.resx">
+      <DependentUpon>201909231027012_doubleStuff.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909231244010_stuff.resx">
+      <DependentUpon>201909231244010_stuff.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909231254308_idkanymore.resx">
+      <DependentUpon>201909231254308_idkanymore.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

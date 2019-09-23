@@ -37,8 +37,9 @@
     </td>
     <td>
         <table class="table table-condensed">
-            @foreach (var game in item.games)
+            @for(int i=0;i<item.games.Count;i++)
             {
+                var game = item.games[i];
                 <tr>
                     <td>
                         <img src="@game.Team1.BadgeUrl" width="35px" height="35px" />
@@ -49,20 +50,18 @@
                         @Html.DisplayFor(modelItem => game.Team2.Name)
                     </td>
                     <td>
-                        @if (game.selectedCoefficient == 1)
+                        @if (item.guesses[i] == 0)
                         {
-                            @game.Coefficient1
+                            <span>@game.Coefficient2</span>
                         }
-                        @if (game.selectedCoefficient == 0)
+                        @if (item.guesses[i] == 1)
                         {
-                            @game.Coefficient2
+                    <span>>@game.Coefficient1</span>
                         }
-                        @if (game.selectedCoefficient == 2)
+                        @if (item.guesses[i] == 2)
                         {
-                            @game.Coefficient3
+                    <span>>@game.Coefficient3</span>
                         }
-
-
                     </td>
                     <td>
                         @if (!game.Completed)
@@ -71,7 +70,7 @@
                         }
                         else
                         {
-                            if (game.Result == 2)
+                            if (game.Result == 0)
                             {
                                 <p>X</p>
                             }

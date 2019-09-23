@@ -24,8 +24,9 @@
                     <th>Start Time</th>
                     <th>End Time</th>
                 </tr>
-             @foreach(var item in Model.games)
-             { 
+             @for(int i=0;i<Model.games.Count;i++)
+             {
+                 var item = Model.games[i];
             <tr>
                 <td>
                     <img src="@item.Team1.BadgeUrl" width="35px" height="35px" />
@@ -36,19 +37,6 @@
                     @Html.DisplayFor(modelItem => item.Team2.Name)
                 </td>
                 <td>
-                    @if (item.selectedCoefficient == 1)
-                    {
-                        @item.Coefficient1
-                    }
-                    @if (item.selectedCoefficient == 0)
-                    {
-                        @item.Coefficient2
-                    }
-                    @if (item.selectedCoefficient == 2)
-                    {
-                        @item.Coefficient3
-                    }
-
 
                 </td>
                 <td>

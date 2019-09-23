@@ -60,14 +60,9 @@ namespace Web_Kladilnica.Controllers
             DateTime dat = DateTime.Now;
             Game game1 = gamecreate.game;
             game1.StartTime = dat;
-            game1.EndTime = dat.AddMinutes(90);
-            game1.Completed = false;
-            
-            game1.HalfTime = false;
-            game1.selectedCoefficient = 0;
+            game1.EndTime = dat.AddMinutes(105);
             game1.team1Score = 0;
             game1.team2Score = 0;
-            game1.Time = 0;
             game1.Team1 = db.Teams.Find(gamecreate.team1ID);
             game1.Team2 = db.Teams.Find(gamecreate.team2ID);
             db.Games.Add(game1);
@@ -82,7 +77,8 @@ namespace Web_Kladilnica.Controllers
             string[] idgame = tick.ids.Split(',');
             string[] coefgame = tick.gameCoef.Split(',');
            List<Game> selGames = new List<Game>();
-            float totalCoef =1;
+            double totalCoef =1;
+            int[] gues = new int[idgame.Length];
             for (int i = 0; i <idgame.Length; i++)
             {
                 int tempID = Convert.ToInt32(idgame[i]);
@@ -92,17 +88,17 @@ namespace Web_Kladilnica.Controllers
                     if (coefgame[i].ToString().Equals("c1"))
                     {
                         totalCoef *= tempGame.Coefficient1;
-                        tempGame.selectedCoefficient = 1;
+                        gues[i] = 1;
                     }
                     else if (coefgame[i].ToString().Equals("c2"))
                     {
                         totalCoef *= tempGame.Coefficient2;
-                        tempGame.selectedCoefficient = 0;
+                        gues[i] = 0;
                     }
-                    else
+                    else if(coefgame[i].ToString().Equals("c3"))
                     {
                         totalCoef *= tempGame.Coefficient3;
-                        tempGame.selectedCoefficient = 2;
+                        gues[i] = 2;
                     }
                     selGames.Add(tempGame);
                 }
@@ -110,22 +106,23 @@ namespace Web_Kladilnica.Controllers
             ticket.games = selGames;
             ticket.totalCoefficient = totalCoef;
             ticket.time = DateTime.Now;
+            ticket.guesses = gues;
             return View(ticket);
 
     
         }
         [HttpPost]
-        public ActionResult CreateTicket([Bind(Include = "ID,games,moneyInvested,totalCoefficient,WinMoney,win,time")] Ticket ticket)
+        public ActionResult CreateTicket([Bind(Include = "games,ID,moneyInvested,totalCoefficient,guesses,WinMoney,win,time")] Ticket ticket)
         {
             List<Ticket> tickets1 = new List<Ticket>();
-            
             string userID = User.Identity.GetUserId();
                 ApplicationUser user = db.Users.Include(m => m.tickets).SingleOrDefault(m => m.Id == userID);
+                 db.tickets.Add(ticket);
                 user.tickets.Add(ticket);
-                db.Entry(user).State = EntityState.Modified;
-                tickets1 = user.tickets ;
-            db.tickets.Add(ticket);
-            db.SaveChanges();
+               db.Entry(user).State = EntityState.Modified;
+               tickets1 = user.tickets ;
+                db.SaveChanges();
+
             return View("ViewTickets",tickets1);
         }
 

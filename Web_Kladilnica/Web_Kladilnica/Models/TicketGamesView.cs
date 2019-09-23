@@ -12,6 +12,7 @@ namespace Web_Kladilnica.Models
         public TicketGamesView()
         {
             games = new List<Game>();
+            ticket = new Ticket();
         }
         public string ids { get; set; }
         public string gameCoef { get; set; }

@@ -24,105 +24,87 @@
             <th>End Time</th>
         </tr>
 
-        @foreach (var game in Model.games)
+        @for(int i=0;i<Model.games.Count;i++)
         {
+            var item=Model.games[i];
             <tr>
                 <td>
-                    <img src="@game.Team1.BadgeUrl" width="35px" height="35px" />
-                    @Html.DisplayFor(modelItem => game.Team1.Name)
+                    <img src="@item.Team1.BadgeUrl" width="35px" height="35px" />
+                    @Html.DisplayFor(modelItem => item.Team1.Name)
                 </td>
                 <td>
-                    <img src="@game.Team2.BadgeUrl" width="35px" height="35px" />
-                    @Html.DisplayFor(modelItem => game.Team2.Name)
+                    <img src="@item.Team2.BadgeUrl" width="35px" height="35px" />
+                    @Html.DisplayFor(modelItem => item.Team2.Name)
                 </td>
                 <td>
-                    @if (game.selectedCoefficient == 1)
+                    @if (Model.guesses[i] == 0)
                     {
-                        @game.Coefficient1
+                        <span>@item.Coefficient2</span>
                     }
-                    @if (game.selectedCoefficient == 0)
+                    @if (Model.guesses[i] == 1)
                     {
-                        @game.Coefficient2
+                        <span>@item.Coefficient1</span>
                     }
-                    @if (game.selectedCoefficient == 2)
+                    @if (Model.guesses[i] == 2)
                     {
-                        @game.Coefficient3
+                        <span>@item.Coefficient3</span>
                     }
-
-
                 </td>
                 <td>
-                    @if (game.selectedCoefficient == 1)
-                    {
-                        <span>1</span>
-                    }
-                    @if (game.selectedCoefficient == 0)
+                    @if (Model.guesses[i] == 0)
                     {
                         <span>X</span>
                     }
-                    @if (game.selectedCoefficient == 2)
+                    @if (Model.guesses[i] == 1)
+                    {
+                        <span>1</span>
+                    }
+                    @if (Model.guesses[i] == 2)
                     {
                         <span>2</span>
                     }
+
+
                 </td>
                 <td>
-                    @if (!game.Completed)
+                    @if (!item.Completed)
                     {
                         <p>Game not completed yet.</p>
                     }
                     else
                     {
-                        if (game.Result == 0)
+                        if (item.Result == 0)
                         {
                             <p>Even</p>
                         }
 
-                        if (game.Result == 1)
+                        if (item.Result == 1)
                         {
-                            @game.Team1.Name <span>Victory</span>
+                            @item.Team1.Name <span>Victory</span>
                         }
-                        if (game.Result == 2)
+                        if (item.Result == 2)
                         {
-                            @game.Team2.Name <span>Victory</span>
+                            @item.Team2.Name <span>Victory</span>
                         }
 
                     }
 
                 </td>
                 <td>
-                    @game.StartTime.Day/@game.StartTime.Month/@game.StartTime.Year @game.StartTime.Hour:@game.StartTime.Minute
+                    @item.StartTime.Day/@item.StartTime.Month/@item.StartTime.Year @item.StartTime.Hour:@item.StartTime.Minute
                 </td>
                 <td>
-                    @game.EndTime.Day/@game.EndTime.Month/@game.EndTime.Year @game.EndTime.Hour:@game.EndTime.Minute
+                    @item.EndTime.Day/@item.EndTime.Month/@item.EndTime.Year @item.EndTime.Hour:@item.EndTime.Minute
                 </td>
             </tr>
 
         }
     </table>
     <div class="form-group">
-        @for (int i = 0; i < Model.games.Count; i++)
+        @for (int i = 0; i <Model.games.Count; i++)
         {
-            @Html.HiddenFor(model => model.games[i].ID)
-            @Html.HiddenFor(model => model.games[i].StartTime)
-            @Html.HiddenFor(model => model.games[i].EndTime)
-            @Html.HiddenFor(model => model.games[i].Team1.Name)
-            @Html.HiddenFor(model => model.games[i].Team1.BadgeUrl)
-            @Html.HiddenFor(model => model.games[i].Team1.ID)
-            @Html.HiddenFor(model => model.games[i].Team2.Name)
-            @Html.HiddenFor(model => model.games[i].Team2.BadgeUrl)
-            @Html.HiddenFor(model => model.games[i].Team2.ID)
-            @Html.HiddenFor(model => model.games[i].team1Score)
-            @Html.HiddenFor(model => model.games[i].team2Score)
-            @Html.HiddenFor(model => model.games[i].Sport)
-            @Html.HiddenFor(model => model.games[i].League)
-            @Html.HiddenFor(model => model.games[i].selectedCoefficient)
-            @Html.HiddenFor(model => model.games[i].Coefficient1)
-            @Html.HiddenFor(model => model.games[i].Coefficient2)
-            @Html.HiddenFor(model => model.games[i].Coefficient3)
-            @Html.HiddenFor(model => model.games[i].HalfTime)
-            @Html.HiddenFor(model => model.games[i].Completed)
-
-
+            @Html.HiddenFor(m => Model.guesses[i]);
+            @Html.HiddenFor(m=>Model.games[i].ID)
         }
         <span class="form-control-static"> @Model.totalCoefficient</span>
     </div>
@@ -139,11 +121,12 @@
             <label class="control-label col-md-2">Future Winnnings</label>
             <input type="text" disabled class="form-control winnings" value="0" />
         </div>
+        
         @Html.HiddenFor(m => m.totalCoefficient, new { @class = "totCoef" })
         @Html.HiddenFor(m => m.time, new { @class = "vreme" })
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" onclick="updateGames(@Model.games)" />
+                <input type="submit" value="Create" class="btn btn-default" />
             </div>
         </div>
     </div>
