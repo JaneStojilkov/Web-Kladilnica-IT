@@ -220,10 +220,13 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Game.cs" />
     <Compile Include="Models\GameCreateModel.cs" />
+    <Compile Include="Models\GameViewModelT.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Team.cs" />
     <Compile Include="Models\Ticket.cs" />
+    <Compile Include="Models\TicketCreateModel.cs" />
+    <Compile Include="Models\TicketDisplayViewModel.cs" />
     <Compile Include="Models\TicketGamesView.cs" />
     <Compile Include="Models\TicketListGamesView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

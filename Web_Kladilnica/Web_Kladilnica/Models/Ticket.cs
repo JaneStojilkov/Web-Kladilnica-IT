@@ -11,8 +11,6 @@ namespace Web_Kladilnica.Models
         public virtual List<Game> games { get; set; }
         public int moneyInvested { get; set; }
         public double totalCoefficient {get;set;}
-
-        //TODO Ne biva taka sekojpat se kreira novi games so drugi selected koeficient brisi go selectedcoefficient pravi so guesses i so virtual list games ne so vakov posle bi trebalo da rabote
         public int[] guesses { get; set; }
         public double WinMoney { get {
              return  moneyInvested* totalCoefficient;
@@ -42,8 +40,7 @@ namespace Web_Kladilnica.Models
         public Ticket()
         {
             games = new List<Game>();
-            time = DateTime.Now;
-                
+           // time = DateTime.Now; 
         }
     }
 }

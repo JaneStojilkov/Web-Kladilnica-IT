@@ -73,7 +73,7 @@ namespace Web_Kladilnica.Controllers
         [HttpPost]
         public ActionResult CreatingTicket(TicketGamesView tick)
         {
-            Ticket ticket = new Ticket();
+            TicketCreateModel ticketCreate = new TicketCreateModel();
             string[] idgame = tick.ids.Split(',');
             string[] coefgame = tick.gameCoef.Split(',');
            List<Game> selGames = new List<Game>();
@@ -103,27 +103,94 @@ namespace Web_Kladilnica.Controllers
                     selGames.Add(tempGame);
                 }
             }
-            ticket.games = selGames;
-            ticket.totalCoefficient = totalCoef;
-            ticket.time = DateTime.Now;
-            ticket.guesses = gues;
-            return View(ticket);
+            /* ticket.games = selGames;
+             ticket.totalCoefficient = totalCoef;
+             ticket.time = DateTime.Now;
+             ticket.guesses = gues;*/
+            
+            ticketCreate.totalCoefficient = totalCoef;
+            ticketCreate.gameIds = idgame;
+            ticketCreate.games = selGames;
+            ticketCreate.guesses = gues;
+            return View(ticketCreate);
 
     
         }
         [HttpPost]
-        public ActionResult CreateTicket([Bind(Include = "games,ID,moneyInvested,totalCoefficient,guesses,WinMoney,win,time")] Ticket ticket)
+        public ActionResult CreateTicket([Bind(Include = "moneyInvested,totalCoefficient,guesses,gameIds")] TicketCreateModel ticketCreate)
         {
-            List<Ticket> tickets1 = new List<Ticket>();
+            
+            Ticket ticket = new Ticket();
+            ticket.time = DateTime.Now;
+            ticket.totalCoefficient = ticketCreate.totalCoefficient;
+            ticket.moneyInvested = ticketCreate.moneyInvested;
+            ticket.guesses = ticketCreate.guesses;
+            List<Game> selGames = new List<Game>();
+            for(int i = 0; i < ticketCreate.gameIds.Length; i++)
+            {
+                int tempID = Convert.ToInt32(ticketCreate.gameIds[i]);
+                Game tempGame = db.Games.Include(m => m.Team1).Include(m => m.Team2).SingleOrDefault(m => m.ID == tempID);
+                if (tempGame != null)
+                {
+                    selGames.Add(tempGame);
+                }
+
+            }
+            ticket.games = selGames;
+            db.tickets.Add(ticket);
+            db.SaveChanges();
+            List<TicketDisplayViewModel> tickets1 = new List<TicketDisplayViewModel>();
+            List<GameViewModelT> gameview = new List<GameViewModelT>();
             string userID = User.Identity.GetUserId();
                 ApplicationUser user = db.Users.Include(m => m.tickets).SingleOrDefault(m => m.Id == userID);
-                 db.tickets.Add(ticket);
                 user.tickets.Add(ticket);
+
                db.Entry(user).State = EntityState.Modified;
-               tickets1 = user.tickets ;
-                db.SaveChanges();
+            db.SaveChanges();
+                foreach(var item in user.tickets)
+                    {
+               
+                Ticket temp = db.tickets.Include(m => m.games).SingleOrDefault(m => m.ID == item.ID);
+                TicketDisplayViewModel tv = new TicketDisplayViewModel()
+                {
+                    totalCoefficient = temp.totalCoefficient,
+                    guesses = temp.guesses,
+                    games = temp.games,
+                    moneyInvested = temp.moneyInvested,
+                    Result = temp.win,
+                    futureWinnings = temp.WinMoney
+                };
+                tickets1.Add(tv);
+            }
+           
 
             return View("ViewTickets",tickets1);
+        }
+        [HttpPost]
+        public ActionResult ViewTickets()
+        {
+            string userID = User.Identity.GetUserId();
+            ApplicationUser user = db.Users.Include(m => m.tickets).SingleOrDefault(m => m.Id == userID);
+            List<TicketDisplayViewModel> tickets = new List<TicketDisplayViewModel>();
+            foreach (var item in user.tickets)
+            {
+
+                Ticket temp = db.tickets.Include(m => m.games).SingleOrDefault(m => m.ID == item.ID);
+                TicketDisplayViewModel tv = new TicketDisplayViewModel()
+                {
+                    totalCoefficient = temp.totalCoefficient,
+                    guesses = temp.guesses,
+                    games = temp.games,
+                    moneyInvested = temp.moneyInvested,
+                    Result = temp.win,
+                    futureWinnings = temp.WinMoney
+                };
+                tickets.Add(tv);
+            }
+
+
+            return View("ViewTickets",tickets);
+
         }
 
     }

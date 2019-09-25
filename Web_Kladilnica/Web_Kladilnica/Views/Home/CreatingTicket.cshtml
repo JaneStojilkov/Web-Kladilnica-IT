@@ -1,4 +1,4 @@
-﻿@model Web_Kladilnica.Models.Ticket
+﻿@model Web_Kladilnica.Models.TicketCreateModel
 
 @{
     ViewBag.Title = "CreateTicket";
@@ -28,6 +28,8 @@
         {
             var item=Model.games[i];
             <tr>
+                @Html.HiddenFor(m=>Model.gameIds[i])
+                @Html.HiddenFor(m=>Model.guesses[i])
                 <td>
                     <img src="@item.Team1.BadgeUrl" width="35px" height="35px" />
                     @Html.DisplayFor(modelItem => item.Team1.Name)
@@ -101,14 +103,12 @@
         }
     </table>
     <div class="form-group">
-        @for (int i = 0; i <Model.games.Count; i++)
-        {
-            @Html.HiddenFor(m => Model.guesses[i]);
-            @Html.HiddenFor(m=>Model.games[i].ID)
-        }
-        <span class="form-control-static"> @Model.totalCoefficient</span>
-    </div>
-      
+        @Html.LabelFor(model=>model.totalCoefficient,htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.totalCoefficient, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+            </div>
+        </div>
+
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
             @Html.LabelFor(model => model.moneyInvested, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -119,17 +119,16 @@
         </div>
         <div class="form-group">
             <label class="control-label col-md-2">Future Winnnings</label>
-            <input type="text" disabled class="form-control winnings" value="0" />
-        </div>
-        
-        @Html.HiddenFor(m => m.totalCoefficient, new { @class = "totCoef" })
-        @Html.HiddenFor(m => m.time, new { @class = "vreme" })
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+            <div class="col-md-10">
+                <input type="text" disabled class="form-control winnings" value="0" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Create" class="btn btn-default" />
+                </div>
             </div>
         </div>
-    </div>
   
 }
 

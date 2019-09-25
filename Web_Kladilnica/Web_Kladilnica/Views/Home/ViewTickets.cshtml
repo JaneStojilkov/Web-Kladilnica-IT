@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Web_Kladilnica.Models.Ticket>
+﻿@model IEnumerable<Web_Kladilnica.Models.TicketDisplayViewModel>
 
 @{
     ViewBag.Title = "ViewTickets";
@@ -6,9 +6,6 @@
 
 <h2>ViewTickets</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
         <th>
@@ -18,9 +15,17 @@
             @Html.DisplayNameFor(model => model.totalCoefficient)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.time)
+            Games
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.futureWinnings)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Result)
+        </th>
+        <th>
 
+        </th>
     </tr>
 
     @foreach (var item in Model)
@@ -33,11 +38,8 @@
         @Html.DisplayFor(modelItem => item.totalCoefficient)
     </td>
     <td>
-        @Html.DisplayFor(modelItem => item.time)
-    </td>
-    <td>
         <table class="table table-condensed">
-            @for(int i=0;i<item.games.Count;i++)
+            @for (int i = 0; i < item.games.Count; i++)
             {
                 var game = item.games[i];
                 <tr>
@@ -56,11 +58,11 @@
                         }
                         @if (item.guesses[i] == 1)
                         {
-                    <span>>@game.Coefficient1</span>
+                            <span>>@game.Coefficient1</span>
                         }
                         @if (item.guesses[i] == 2)
                         {
-                    <span>>@game.Coefficient3</span>
+                            <span>>@game.Coefficient3</span>
                         }
                     </td>
                     <td>
@@ -87,13 +89,14 @@
             }
         </table>
     </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.futureWinnings)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Result)
+    </td>
 
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.ID }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.ID })
-                </td>
-            </tr>
+</tr>
 
         }
 
