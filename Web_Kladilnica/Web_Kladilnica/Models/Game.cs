@@ -30,10 +30,10 @@ namespace Web_Kladilnica.Models
         public double Coefficient2 { get; set; }
         public double Coefficient3 { get; set; }
         public string League { get; set; }
-        public Team Team1 { get; set; }
+        public int Team1ID { get; set; }
+        public int Team2ID { get; set; }
         public int team1Score { get; set; }
         public int team2Score { get; set; }
-        public Team Team2 { get; set; }
         public int Result
         {
             get

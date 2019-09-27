@@ -216,6 +216,18 @@
     <Compile Include="Migrations\201909231254308_idkanymore.Designer.cs">
       <DependentUpon>201909231254308_idkanymore.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201909271903490_gameChanges.cs" />
+    <Compile Include="Migrations\201909271903490_gameChanges.Designer.cs">
+      <DependentUpon>201909271903490_gameChanges.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909271949248_moreChanges.cs" />
+    <Compile Include="Migrations\201909271949248_moreChanges.Designer.cs">
+      <DependentUpon>201909271949248_moreChanges.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909272052526_moreShit1.cs" />
+    <Compile Include="Migrations\201909272052526_moreShit1.Designer.cs">
+      <DependentUpon>201909272052526_moreShit1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Game.cs" />
@@ -342,6 +354,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201909231254308_idkanymore.resx">
       <DependentUpon>201909231254308_idkanymore.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909271903490_gameChanges.resx">
+      <DependentUpon>201909271903490_gameChanges.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909271949248_moreChanges.resx">
+      <DependentUpon>201909271949248_moreChanges.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909272052526_moreShit1.resx">
+      <DependentUpon>201909272052526_moreShit1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

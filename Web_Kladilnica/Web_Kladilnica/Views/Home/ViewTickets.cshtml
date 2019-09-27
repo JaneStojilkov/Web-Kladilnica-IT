@@ -44,12 +44,12 @@
                 var game = item.games[i];
                 <tr>
                     <td>
-                        <img src="@game.Team1.BadgeUrl" width="35px" height="35px" />
-                        @Html.DisplayFor(modelItem => game.Team1.Name)
+                        <img src="@game.team1.BadgeUrl" width="35px" height="35px" />
+                        @Html.DisplayFor(modelItem => game.team1.Name)
                     </td>
                     <td>
-                        <img src="@game.Team2.BadgeUrl" width="35px" height="35px" />
-                        @Html.DisplayFor(modelItem => game.Team2.Name)
+                        <img src="@game.team2.BadgeUrl" width="35px" height="35px" />
+                        @Html.DisplayFor(modelItem => game.team2.Name)
                     </td>
                     <td>
                         @if (item.guesses[i] == 0)
@@ -58,27 +58,27 @@
                         }
                         @if (item.guesses[i] == 1)
                         {
-                            <span>>@game.Coefficient1</span>
+                            <span>@game.Coefficient1</span>
                         }
                         @if (item.guesses[i] == 2)
                         {
-                            <span>>@game.Coefficient3</span>
+                            <span>@game.Coefficient3</span>
                         }
                     </td>
                     <td>
-                        @if (!game.Completed)
+                        @if (!game.completed)
                         {
                             <p>Game not completed yet.</p>
                         }
                         else
                         {
-                            if (game.Result == 0)
+                            if (game.outcome == 0)
                             {
                                 <p>X</p>
                             }
                             else
                             {
-                                @game.Result
+                                @game.outcome
                             }
                         }
 

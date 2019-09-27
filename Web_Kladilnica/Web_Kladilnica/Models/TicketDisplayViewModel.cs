@@ -10,10 +10,11 @@ namespace Web_Kladilnica.Models
     {
         [Display(Name ="Total Coefficient")]
         public double totalCoefficient { get; set; }
-        public List<Game> games { get; set; }
+        public List<GameViewModelT> games { get; set; }
         [Display(Name="Invested Money")]
-    
+
         public int moneyInvested { get; set; }
+
         public int[] guesses { get; set; }
         [Display(Name ="Future Winnings")]
         public double futureWinnings { get; set; }
@@ -21,7 +22,7 @@ namespace Web_Kladilnica.Models
         public bool Result { get; set; }
         public TicketDisplayViewModel()
         {
-            games = new List<Game>();
+            games = new List<GameViewModelT>();
         }
     }
 }

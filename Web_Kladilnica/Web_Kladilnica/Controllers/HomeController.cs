@@ -23,8 +23,32 @@ namespace Web_Kladilnica.Controllers
        
         public PartialViewResult GamesPartial(string izbor)
         {
-            var g = db.Games.Where(m=>m.Sport.Equals(izbor)).Include(m=>m.Team1).Include(m=>m.Team2);
-            return PartialView("_GamesView", g.ToList());
+            List<Game> games = db.Games.Where(m=>m.Sport.Equals(izbor)).ToList();
+            List<GameViewModelT> gameView = new List<GameViewModelT>();
+
+            foreach(Game g in games)
+            {
+                GameViewModelT gv = new GameViewModelT()
+                {
+                    gameId = g.ID,
+                    HalfTime = g.HalfTime,
+                    team1 = db.Teams.Find(g.Team1ID),
+                    team2 = db.Teams.Find(g.Team2ID),
+                    start = g.StartTime,
+                    end = g.EndTime,
+                    team1Score = g.team1Score,
+                    team2Score = g.team2Score,
+                    completed = g.Completed,
+                    Coefficient1 = g.Coefficient1,
+                    Coefficient2 = g.Coefficient2,
+                    Coefficient3 = g.Coefficient3,
+                    outcome = g.Result,
+                    Time = g.Time
+                };
+                gameView.Add(gv);
+            
+            }
+            return PartialView("_GamesView", gameView);
         }
         
 
@@ -63,8 +87,8 @@ namespace Web_Kladilnica.Controllers
             game1.EndTime = dat.AddMinutes(105);
             game1.team1Score = 0;
             game1.team2Score = 0;
-            game1.Team1 = db.Teams.Find(gamecreate.team1ID);
-            game1.Team2 = db.Teams.Find(gamecreate.team2ID);
+            game1.Team1ID = gamecreate.team1ID;
+            game1.Team2ID = gamecreate.team2ID;
             db.Games.Add(game1);
             db.SaveChanges();
             return RedirectToAction("Index");
@@ -76,15 +100,32 @@ namespace Web_Kladilnica.Controllers
             TicketCreateModel ticketCreate = new TicketCreateModel();
             string[] idgame = tick.ids.Split(',');
             string[] coefgame = tick.gameCoef.Split(',');
-           List<Game> selGames = new List<Game>();
+           List<GameViewModelT> selGames = new List<GameViewModelT>();
             double totalCoef =1;
             int[] gues = new int[idgame.Length];
             for (int i = 0; i <idgame.Length; i++)
             {
                 int tempID = Convert.ToInt32(idgame[i]);
-                Game tempGame =db.Games.Include(m=>m.Team1).Include(m => m.Team2).SingleOrDefault(m=>m.ID==tempID);
+                Game tempGame =db.Games.Find(tempID);
                 if (tempGame != null)
                 {
+                    GameViewModelT gameView = new GameViewModelT()
+                    {
+                        gameId = tempGame.ID,
+                        HalfTime = tempGame.HalfTime,
+                        team1 = db.Teams.Find(tempGame.Team1ID),
+                        team2 = db.Teams.Find(tempGame.Team2ID),
+                        start = tempGame.StartTime,
+                        end = tempGame.EndTime,
+                        team1Score = tempGame.team1Score,
+                        team2Score = tempGame.team2Score,
+                        completed = tempGame.Completed,
+                        Coefficient1 = tempGame.Coefficient1,
+                        Coefficient2 = tempGame.Coefficient2,
+                        Coefficient3 = tempGame.Coefficient3,
+                        outcome = tempGame.Result,
+                        Time = tempGame.Time
+                    };
                     if (coefgame[i].ToString().Equals("c1"))
                     {
                         totalCoef *= tempGame.Coefficient1;
@@ -100,7 +141,7 @@ namespace Web_Kladilnica.Controllers
                         totalCoef *= tempGame.Coefficient3;
                         gues[i] = 2;
                     }
-                    selGames.Add(tempGame);
+                    selGames.Add(gameView);
                 }
             }
             /* ticket.games = selGames;
@@ -125,22 +166,52 @@ namespace Web_Kladilnica.Controllers
             ticket.totalCoefficient = ticketCreate.totalCoefficient;
             ticket.moneyInvested = ticketCreate.moneyInvested;
             ticket.guesses = ticketCreate.guesses;
-            List<Game> selGames = new List<Game>();
+            List<GameViewModelT> gameviews = new List<GameViewModelT>();
+            bool win = false;
+            int[] realIds = new int[ticketCreate.gameIds.Length]; 
             for(int i = 0; i < ticketCreate.gameIds.Length; i++)
             {
+
                 int tempID = Convert.ToInt32(ticketCreate.gameIds[i]);
-                Game tempGame = db.Games.Include(m => m.Team1).Include(m => m.Team2).SingleOrDefault(m => m.ID == tempID);
+                realIds[i] = tempID;
+                Game tempGame = db.Games.Find(tempID);
+                if(tempGame.Completed && tempGame.Result == ticketCreate.guesses[i])
+                {
+                    win = true;
+                }
+                else
+                {
+                    win = false;
+                }
                 if (tempGame != null)
                 {
-                    selGames.Add(tempGame);
+                    GameViewModelT gameView = new GameViewModelT()
+                    {
+                        gameId = tempGame.ID,
+                        HalfTime=tempGame.HalfTime,
+                        team1 = db.Teams.Find(tempGame.Team1ID),
+                        team2 = db.Teams.Find(tempGame.Team2ID),
+                        start = tempGame.StartTime,
+                        end = tempGame.EndTime,
+                        team1Score = tempGame.team1Score,
+                        team2Score = tempGame.team2Score,
+                        completed = tempGame.Completed,
+                        Coefficient1 = tempGame.Coefficient1,
+                        Coefficient2 = tempGame.Coefficient2,
+                        Coefficient3 = tempGame.Coefficient3,
+                        outcome = tempGame.Result,
+                        Time = tempGame.Time
+                    };
+                    gameviews.Add(gameView);
                 }
 
             }
-            ticket.games = selGames;
+            ticket.win = win;
+            ticket.gameIDs = realIds;
             db.tickets.Add(ticket);
             db.SaveChanges();
             List<TicketDisplayViewModel> tickets1 = new List<TicketDisplayViewModel>();
-            List<GameViewModelT> gameview = new List<GameViewModelT>();
+            
             string userID = User.Identity.GetUserId();
                 ApplicationUser user = db.Users.Include(m => m.tickets).SingleOrDefault(m => m.Id == userID);
                 user.tickets.Add(ticket);
@@ -149,13 +220,54 @@ namespace Web_Kladilnica.Controllers
             db.SaveChanges();
                 foreach(var item in user.tickets)
                     {
-               
-                Ticket temp = db.tickets.Include(m => m.games).SingleOrDefault(m => m.ID == item.ID);
+                List<GameViewModelT> viewGames1 = new List<GameViewModelT>();
+                Ticket temp = db.tickets.Find(item.ID);
+                bool iswon = false;
+                        for(int j = 0; j < temp.gameIDs.Length; j++)
+                {
+                    Game tempGame = db.Games.Find(temp.gameIDs[j]);
+                    if (tempGame != null)
+                    {
+                        if (tempGame.Completed && tempGame.Result == item.guesses[j])
+                        {
+                            iswon = true;
+                        }
+                        else
+                        {
+                            iswon = false;
+                        }
+                        GameViewModelT gameView = new GameViewModelT()
+                        {
+                            gameId = tempGame.ID,
+                            HalfTime = tempGame.HalfTime,
+                            team1 = db.Teams.Find(tempGame.Team1ID),
+                            team2 = db.Teams.Find(tempGame.Team2ID),
+                            start = tempGame.StartTime,
+                            end = tempGame.EndTime,
+                            team1Score = tempGame.team1Score,
+                            team2Score = tempGame.team2Score,
+                            completed = tempGame.Completed,
+                            Coefficient1 = tempGame.Coefficient1,
+                            Coefficient2 = tempGame.Coefficient2,
+                            Coefficient3 = tempGame.Coefficient3,
+                            outcome = tempGame.Result,
+                            Time = tempGame.Time
+                        };
+                        viewGames1.Add(gameView);
+                    }
+                }
+                if (temp.win != iswon)
+                {
+                    temp.win = iswon;
+                    db.Entry(temp).State = EntityState.Modified;
+                    db.SaveChanges();
+                   
+                }
                 TicketDisplayViewModel tv = new TicketDisplayViewModel()
                 {
                     totalCoefficient = temp.totalCoefficient,
-                    guesses = temp.guesses,
-                    games = temp.games,
+                    guesses =temp.guesses,
+                    games = viewGames1,
                     moneyInvested = temp.moneyInvested,
                     Result = temp.win,
                     futureWinnings = temp.WinMoney
@@ -166,32 +278,74 @@ namespace Web_Kladilnica.Controllers
 
             return View("ViewTickets",tickets1);
         }
-        [HttpPost]
-        public ActionResult ViewTickets()
+       
+        public ActionResult UserViewTickets(string userID)
         {
-            string userID = User.Identity.GetUserId();
-            ApplicationUser user = db.Users.Include(m => m.tickets).SingleOrDefault(m => m.Id == userID);
-            List<TicketDisplayViewModel> tickets = new List<TicketDisplayViewModel>();
+            string userid = userID;
+            if (userID == null)
+            {
+                userid = User.Identity.GetUserId();
+            }
+            List<TicketDisplayViewModel> tickets1 = new List<TicketDisplayViewModel>();
+            ApplicationUser user = db.Users.Include(m => m.tickets).SingleOrDefault(m => m.Id == userid);
             foreach (var item in user.tickets)
             {
+                List<GameViewModelT> viewGames1 = new List<GameViewModelT>();
+                Ticket temp = db.tickets.Find(item.ID);
+                bool iswon = false;
+                for (int j = 0; j < temp.gameIDs.Length; j++)
+                {
 
-                Ticket temp = db.tickets.Include(m => m.games).SingleOrDefault(m => m.ID == item.ID);
+                    Game tempGame = db.Games.Find(temp.gameIDs[j]);
+                    if (tempGame != null)
+                    {
+                        if (tempGame.Completed && tempGame.Result == item.guesses[j])
+                        {
+                            iswon = true;
+                        }
+                        else
+                        {
+                            iswon = false;
+                        }
+                        GameViewModelT gameView = new GameViewModelT()
+                        {
+                            gameId = tempGame.ID,
+                            HalfTime = tempGame.HalfTime,
+                            team1 = db.Teams.Find(tempGame.Team1ID),
+                            team2 = db.Teams.Find(tempGame.Team2ID),
+                            start = tempGame.StartTime,
+                            end = tempGame.EndTime,
+                            team1Score = tempGame.team1Score,
+                            team2Score = tempGame.team2Score,
+                            completed = tempGame.Completed,
+                            Coefficient1 = tempGame.Coefficient1,
+                            Coefficient2 = tempGame.Coefficient2,
+                            Coefficient3 = tempGame.Coefficient3,
+                            outcome = tempGame.Result,
+                            Time = tempGame.Time
+                        };
+                        viewGames1.Add(gameView);
+                    }
+
+                }
+                if (temp.win != iswon)
+                {
+                    temp.win = iswon;
+                    db.Entry(temp).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
                 TicketDisplayViewModel tv = new TicketDisplayViewModel()
                 {
                     totalCoefficient = temp.totalCoefficient,
                     guesses = temp.guesses,
-                    games = temp.games,
+                    games = viewGames1,
                     moneyInvested = temp.moneyInvested,
                     Result = temp.win,
                     futureWinnings = temp.WinMoney
                 };
-                tickets.Add(tv);
+                tickets1.Add(tv);
             }
-
-
-            return View("ViewTickets",tickets);
-
+            return View("ViewTickets", tickets1);
         }
-
     }
 }

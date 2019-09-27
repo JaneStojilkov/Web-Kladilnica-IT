@@ -6,9 +6,7 @@
     @Html.AntiForgeryToken()
 
     <ul class="nav navbar-nav navbar-right">
-        <li>
-            <a href="#" onclick="ViewTickets()">View Tickets</a>
-        </li>
+        <li>@Html.ActionLink("View Tickets", "UserViewTickets", "Home", routeValues: null, htmlAttributes: new { userID = User.Identity.GetUserId() })</li>
         <li>
             @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
         </li>

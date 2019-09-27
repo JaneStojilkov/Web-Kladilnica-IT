@@ -31,12 +31,12 @@
                 @Html.HiddenFor(m=>Model.gameIds[i])
                 @Html.HiddenFor(m=>Model.guesses[i])
                 <td>
-                    <img src="@item.Team1.BadgeUrl" width="35px" height="35px" />
-                    @Html.DisplayFor(modelItem => item.Team1.Name)
+                    <img src="@item.team1.BadgeUrl" width="35px" height="35px" />
+                    @Html.DisplayFor(modelItem => item.team1.Name)
                 </td>
                 <td>
-                    <img src="@item.Team2.BadgeUrl" width="35px" height="35px" />
-                    @Html.DisplayFor(modelItem => item.Team2.Name)
+                    <img src="@item.team2.BadgeUrl" width="35px" height="35px" />
+                    @Html.DisplayFor(modelItem => item.team2.Name)
                 </td>
                 <td>
                     @if (Model.guesses[i] == 0)
@@ -69,34 +69,34 @@
 
                 </td>
                 <td>
-                    @if (!item.Completed)
+                    @if (!item.completed)
                     {
                         <p>Game not completed yet.</p>
                     }
                     else
                     {
-                        if (item.Result == 0)
+                        if (item.outcome == 0)
                         {
                             <p>Even</p>
                         }
 
-                        if (item.Result == 1)
+                        if (item.outcome == 1)
                         {
-                            @item.Team1.Name <span>Victory</span>
+                            @item.team1.Name <span>Victory</span>
                         }
-                        if (item.Result == 2)
+                        if (item.outcome == 2)
                         {
-                            @item.Team2.Name <span>Victory</span>
+                            @item.team2.Name <span>Victory</span>
                         }
 
                     }
 
                 </td>
                 <td>
-                    @item.StartTime.Day/@item.StartTime.Month/@item.StartTime.Year @item.StartTime.Hour:@item.StartTime.Minute
+                    @item.start.Day/@item.start.Month/@item.start.Year @item.start.Hour:@item.start.Minute
                 </td>
                 <td>
-                    @item.EndTime.Day/@item.EndTime.Month/@item.EndTime.Year @item.EndTime.Hour:@item.EndTime.Minute
+                    @item.end.Day/@item.end.Month/@item.end.Year @item.end.Hour:@item.end.Minute
                 </td>
             </tr>
 
@@ -105,7 +105,7 @@
     <div class="form-group">
         @Html.LabelFor(model=>model.totalCoefficient,htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.TextBoxFor(m => m.totalCoefficient, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+            @Html.TextBoxFor(m => m.totalCoefficient, new { htmlAttributes = new { @class = "form-control", @readonly = "true" } })
             </div>
         </div>
 
