@@ -7,7 +7,11 @@
 <script src="~/Scripts/jquery-1.7.1.min.js" type="text/javascript"></script>
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js" type="text/javascript"></script>
 <script src="https://kit.fontawesome.com/8eb5fa4392.js"></script>
-
+<div class="row">
+    <div class="col-md4" style="margin-left:46%;margin-top:1em;font-size:1.6vw">
+        <span class="prev-day" style="cursor:pointer;font-size:1.8vw" datum=@DateTime.Now.AddDays(-1).ToShortDateString()><</span><span class="label label-primary den" style="margin:0 1.5% 0 1.5%" datum=@DateTime.Now.ToShortDateString()>Today</span><span class="next-day" style="cursor:pointer;font-size:1.8vw" datum=" datum=@DateTime.Now.AddDays(1).ToShortDateString()">></span>
+    </div>
+</div>
 <ul class="nav nav-tabs">
     <li role="presentation" class="active" sport="Football"><a href="#" onclick="loadGames('Football')"><i class="fas fa-futbol"></i> Football</a></li>
     <li role="presentation" sport="Basketball"><a href="#" onclick="loadGames('Basketball')"><i class="fas fa-basketball-ball"></i> Basketball</a></li>
@@ -21,9 +25,11 @@
 {
     @Html.HiddenFor(m => m.ids)
     @Html.HiddenFor(m => m.gameCoef)
-    <button type="submit" class="btn btn-primary" onclick="updateStuff()">Preview </button>
+    <button type="submit" class="btn btn-primary previewKopce" onclick="updateStuff()">Preview </button>
 
 }
+<style>
+</style>
 @section scripts{
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
@@ -59,24 +65,40 @@
         }
         var aktivno = $(".active").attr("sport");
         const loadGames = function (tip) {
+            
             $.ajax({
                 type: "POST",
                 url: "/Home/GamesPartial/",
                 data: { izbor: tip },
                 success: function (result) {
                     $(".igri").html(result);
-
+                    proveriZavrseno();
                 }
             })
+            
+        }
+        const proveriZavrseno = function () {
+             $("tr").each(function (id, item) {
+                    if ($(item).attr("zavrsen") == "True") {
+                        $(item).addClass("bg-warning");
+                    }
+                })
         }
 
-            $(document).ready(function () {
-
+        $(document).ready(function () {
+            proveriZavrseno();
+            $(".previewKopce").click(function (e) {
+                if (GameId == "") {
+                    e.preventDefault();
+                    alert("You havent selected a coefficient.");
+                }
+            })
                 $("li").click(function () {
                     aktivno = $(this).attr("sport");
                     $(this).addClass("active").siblings().removeClass("active");
 
                 })
+               
                 
 
 

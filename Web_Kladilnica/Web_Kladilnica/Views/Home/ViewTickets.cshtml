@@ -4,101 +4,81 @@
     ViewBag.Title = "ViewTickets";
 }
 
-<h2>ViewTickets</h2>
+<h2>@User.Identity.Name.Substring(0, User.Identity.Name.IndexOf('@'))'s Tickets</h2>
+@for (int i = 0; i < Model.Count(); i++)
+{
+    var item = Model.ElementAt(i);
+    <div class="panel-group">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title ">
+                    <a data-toggle="collapse" href=#@i><b>@(i + 1). </b> @item.Time.ToString() <br /> <b>Money Invested:</b> @item.moneyInvested$ </a>
+                </h4>
+            </div>
+            <div id=@i class="panel-collapse collapse">
+                <ul class="list-group">
+                    <div class="row">
+                        <b><span class="col-md-4">Teams</span> <span class="col-md-2">Coefficient</span><span class="col-md-3">Selected Outcome</span><span class="col-md-3">Result</span></b>
+                    </div>
+                    @for (int j = 0; j < item.games.Count; j++)
+                    {
+                        var game = item.games[j];
 
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.moneyInvested)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.totalCoefficient)
-        </th>
-        <th>
-            Games
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.futureWinnings)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Result)
-        </th>
-        <th>
-
-        </th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
-<tr>
-    <td>
-        @Html.DisplayFor(modelItem => item.moneyInvested)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.totalCoefficient)
-    </td>
-    <td>
-        <table class="table table-condensed">
-            @for (int i = 0; i < item.games.Count; i++)
-            {
-                var game = item.games[i];
-                <tr>
-                    <td>
-                        <img src="@game.team1.BadgeUrl" width="35px" height="35px" />
-                        @Html.DisplayFor(modelItem => game.team1.Name)
-                    </td>
-                    <td>
-                        <img src="@game.team2.BadgeUrl" width="35px" height="35px" />
-                        @Html.DisplayFor(modelItem => game.team2.Name)
-                    </td>
-                    <td>
-                        @if (item.guesses[i] == 0)
-                        {
-                            <span>@game.Coefficient2</span>
-                        }
-                        @if (item.guesses[i] == 1)
-                        {
-                            <span>@game.Coefficient1</span>
-                        }
-                        @if (item.guesses[i] == 2)
-                        {
-                            <span>@game.Coefficient3</span>
-                        }
-                    </td>
-                    <td>
-                        @if (!game.completed)
-                        {
-                            <p>Game not completed yet.</p>
-                        }
-                        else
-                        {
-                            if (game.outcome == 0)
-                            {
-                                <p>X</p>
-                            }
-                            else
-                            {
-                                @game.outcome
-                            }
-                        }
+                        <li class="list-group-item">
+                            <div class="row">
+                                <span class="col-md-4"><img src="@game.team1.BadgeUrl" width="35px" height="35px" />@game.team1.Name  vs <img src="@game.team2.BadgeUrl" width="35px" height="35px" />@game.team2.Name</span>
+                                @if (item.guesses[j] == 1)
+                                {
+                                    <span class="col-md-2"> @game.Coefficient1</span>
+                                    <span class="col-md-3"> 1</span>
+                                }
+                                @if (item.guesses[j] == 0)
+                                {
+                                    <span class="col-md-2"> @game.Coefficient2</span>
+                                    <span class="col-md-3"> X</span>
+                                }
+                                @if (item.guesses[j] == 2)
+                                {
+                                    <span class="col-md-2"> @game.Coefficient3</span>
+                                    <span class="col-md-3"> 2</span>
+                                }
+                                @if (!game.completed)
+                                {
+                                    <span class="col-md-3"> Game not completed yet.</span>
+                                }
+                                else
+                                {
+                                    if (game.outcome == 0)
+                                    {
+                                        <span class="col-md-3" style="padding-left:3%">X</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="col-md-3" style="padding-left:3%">@game.outcome</span>
+                                    }
+                                }
 
 
-                    </td>
-                </tr>
+                            </div>
+                        </li>
 
-            }
-        </table>
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.futureWinnings)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Result)
-    </td>
+                    }
 
-</tr>
+                </ul>
+                <div class="panel-footer">
+                    <b>Total Coefficient:</b> @item.totalCoefficient <br /><b>Future Winnings:</b> @item.futureWinnings$<br /><b>Winning Ticket:</b>
+                    @if (item.Result == true)
+                    {
+                        <i style="color:green" class="fas fa-check"></i>
+                    }
+                    else
+                    {
+                        <i style="color:red" class="fas fa-times"></i>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
 
-        }
-
-
-        </table>
+}
+<script src="https://kit.fontawesome.com/8eb5fa4392.js"></script>

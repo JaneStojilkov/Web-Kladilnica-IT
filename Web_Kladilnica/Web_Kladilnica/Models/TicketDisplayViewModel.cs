@@ -14,7 +14,7 @@ namespace Web_Kladilnica.Models
         [Display(Name="Invested Money")]
 
         public int moneyInvested { get; set; }
-
+        public DateTime Time { get; set; }
         public int[] guesses { get; set; }
         [Display(Name ="Future Winnings")]
         public double futureWinnings { get; set; }

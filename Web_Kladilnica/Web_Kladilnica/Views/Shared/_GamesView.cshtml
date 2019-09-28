@@ -2,83 +2,101 @@
 
 
 
-<table class="table table-condensed">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.team1)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.team2)
-        </th>
-        <th>
-            Score
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Time)
-        </th>
-        <th>
-            1 x 2
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.completed)
-        </th>
-
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
-        var IDGame = item.gameId;
+    <table class="table table-condensed">
         <tr>
-            <td>
-                <img src="@item.team1.BadgeUrl" width="35px" height="35px" />
-                @Html.DisplayFor(modelItem => item.team1.Name)
-            </td>
-            <td>
-                <img src="@item.team2.BadgeUrl" width="35px" height="35px" />
-                @Html.DisplayFor(modelItem => item.team2.Name)
-            </td>
-            <td>
-                @item.team1Score:@item.team2Score
-            </td>
-            <td>
-                @if (item.HalfTime == true )
-                {
-                    <span>HT</span>
-                }
-                @if(item.HalfTime==false && item.Time >= 60 && !item.completed)
-                {
-                    <span>@(item.Time-15)</span>
-                }
-                @if(item.HalfTime==false && item.Time < 60)
-                {
-                    <span>@item.Time</span>
-                }
-                @if (item.completed)
-                {
-                    <span>FT</span>
-                }
-            </td>
-            <td>
-                <div class="btn-group">
-                    <input type="button" value="@item.Coefficient1.ToString()" id="c1" name="@item.gameId" onclick="ClickCoef()" class="btns"  />
-                    <input type="button" value="@item.Coefficient2.ToString()" id="c2" name="@item.gameId" onclick="ClickCoef()" class="btns" />
-                    <input type="button" value="@item.Coefficient3.ToString()" id="c3" name="@item.gameId" onclick="ClickCoef()" class="btns" />
-                </div>
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.completed)
-            </td>
-
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.gameId }) |
-                @Html.ActionLink("Details", "Details", new { id = item.gameId }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.gameId })
-            </td>
+            <th>
+                @Html.DisplayNameFor(model => model.team1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.team2)
+            </th>
+            <th>
+                Score
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Time)
+            </th>
+            <th>
+                1 x 2
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.start)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.end)
+            </th>
+            @if (User.IsInRole("Administrator"))
+            {
+            <th></th>}
         </tr>
-    }
 
-</table>
+        @foreach (var item in Model)
+        {
+            var IDGame = item.gameId;
+                <tr zavrsen=@item.completed.ToString()>
+
+                    <td>
+                        <img src="@item.team1.BadgeUrl" width="35px" height="35px" />
+                        @Html.DisplayFor(modelItem => item.team1.Name)
+                    </td>
+                    <td>
+                        <img src="@item.team2.BadgeUrl" width="35px" height="35px" />
+                        @Html.DisplayFor(modelItem => item.team2.Name)
+                    </td>
+                    <td>
+                        @item.team1Score:@item.team2Score
+                    </td>
+                    <td>
+                        @if (item.HalfTime == true)
+                        {
+                            <span>HT</span>
+                        }
+                        @if (item.HalfTime == false && item.Time >= 60 && !item.completed)
+                        {
+                            <span>@(item.Time - 15)</span>
+                        }
+                        @if (item.HalfTime == false && item.Time < 60)
+                        {
+                            <span>@item.Time</span>
+                        }
+                        @if (item.completed)
+                        {
+                            <span>FT</span>
+                        }
+                    </td>
+                    <td>
+                        @if (item.completed || User.Identity.Name.Length==0)
+                        {
+                            <div class="btn-group">
+                                <input type="button" value="@item.Coefficient1.ToString()" id="c1" name="@item.gameId" disabled/>
+                                <input type="button" value="@item.Coefficient2.ToString()" id="c2" name="@item.gameId" disabled/>
+                                <input type="button" value="@item.Coefficient3.ToString()" id="c3" name="@item.gameId" disabled/>
+                            </div>
+                        }
+                        else
+                        {
+                        <div class="btn-group">
+                            <input type="button" value="@item.Coefficient1.ToString()" id="c1" name="@item.gameId" onclick="ClickCoef()" class="btns" />
+                            <input type="button" value="@item.Coefficient2.ToString()" id="c2" name="@item.gameId" onclick="ClickCoef()" class="btns" />
+                            <input type="button" value="@item.Coefficient3.ToString()" id="c3" name="@item.gameId" onclick="ClickCoef()" class="btns" />
+                        </div>}
+                    </td>
+                    <td>
+                        <span>@item.start.ToShortTimeString()</span>
+                    </td>
+                    <td>
+                        <span>@item.end.ToShortTimeString()</span>
+                    </td>
+                    @if(User.IsInRole("Administrator"))
+                    {
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.gameId }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.gameId })
+                    </td>}
+                </tr>
+            }
+
+        </table>
 <script src="~/Scripts/jquery-3.3.1.min.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>

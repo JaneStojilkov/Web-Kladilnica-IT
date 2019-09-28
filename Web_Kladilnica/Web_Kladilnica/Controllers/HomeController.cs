@@ -270,7 +270,8 @@ namespace Web_Kladilnica.Controllers
                     games = viewGames1,
                     moneyInvested = temp.moneyInvested,
                     Result = temp.win,
-                    futureWinnings = temp.WinMoney
+                    futureWinnings = temp.WinMoney,
+                    Time=temp.time
                 };
                 tickets1.Add(tv);
             }
@@ -341,7 +342,8 @@ namespace Web_Kladilnica.Controllers
                     games = viewGames1,
                     moneyInvested = temp.moneyInvested,
                     Result = temp.win,
-                    futureWinnings = temp.WinMoney
+                    futureWinnings = temp.WinMoney,
+                     Time = temp.time
                 };
                 tickets1.Add(tv);
             }
