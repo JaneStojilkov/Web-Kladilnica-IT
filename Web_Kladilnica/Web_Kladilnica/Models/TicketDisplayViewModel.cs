@@ -8,6 +8,7 @@ namespace Web_Kladilnica.Models
 {
     public class TicketDisplayViewModel
     {
+        public int TicketID { get; set; }
         [Display(Name ="Total Coefficient")]
         public double totalCoefficient { get; set; }
         public List<GameViewModelT> games { get; set; }

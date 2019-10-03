@@ -94,7 +94,7 @@
                     {
                     <td>
                         @Html.ActionLink("Edit", "EditGame", new { id = item.gameId }) |
-                        <button igra-ID="@item.gameId" class="btn btn-link brisi" onclick="brisiGame()">Delete</button>
+                        <button igra-ID=@item.gameId class="btn btn-link brisi" onclick="brisiGame(@item.gameId)">Delete</button>
                     </td>}
                 </tr>
             }

@@ -31,7 +31,7 @@
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
-                <button team-ID="@item.ID" class="btn btn-link brisi" onclick="brisiTim()">Delete</button>
+                <button team-ID=@item.ID class="btn btn-link brisi" onclick="brisiTim(@item.ID)">Delete</button>
             </td>
         </tr>
     }
@@ -41,15 +41,16 @@
 @Scripts.Render("~/bundles/bootstrap")
 <script src="~/Scripts/jquery-3.3.1.js"></script>
 <script>
-    const brisiTim = function () {
-            var btn = $(".brisi");
+    const brisiTim = function (idto) {
+        var sel = "[team-ID=" + idto + "]";
+        var btn = $(sel);
             var sigurnost = confirm("Are you sure you want to delete this team(The games that have this team in them will also be deleted)?");
             if (sigurnost == true) {
                 $.ajax({
                     method: "POST",
                     url: "/Teams/DeleteTeam/" + btn.attr("team-ID"),
                     success: function () {
-                        btn.parents("tr").remove();
+                       btn.parents("tr").remove();
                     }
                 })
             }

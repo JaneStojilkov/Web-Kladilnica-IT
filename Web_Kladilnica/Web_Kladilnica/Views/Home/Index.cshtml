@@ -131,8 +131,10 @@
             loadGames(aktivno);
 
         })
-        const brisiGame = function () {
-            var btn = $(".brisi");
+        const brisiGame = function (idto) {
+                    var sel = "[igra-ID=" + idto + "]";
+            var btn = $(sel);
+            console.log(btn);
             var sigurnost = confirm("Are you sure you want to delete this game?");
             if (sigurnost == true) {
                 $.ajax({

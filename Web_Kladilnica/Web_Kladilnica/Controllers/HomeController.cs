@@ -15,7 +15,6 @@ namespace Web_Kladilnica.Controllers
     public class HomeController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
-        private List<Game> games = new List<Game>();
         public ActionResult Index()
         {
             return View();
@@ -34,13 +33,41 @@ namespace Web_Kladilnica.Controllers
                     int rand = random.Next(1, 50);
                     if (rand == 3)
                     {
-                        g.team1Score = g.team1Score + 1;
+                        if (g.Sport.Equals("Basketball"))
+                        {
+                            if (random.Next(0, 3) == 2)
+                            {
+                                g.team1Score = g.team1Score + 3;
+                            }
+                            else
+                            {
+                                g.team1Score = g.team1Score + 2;
+                            }
+                        }
+                        else
+                        {
+                            g.team1Score = g.team1Score + 1;
+                        }
                         db.Entry(g).State = EntityState.Modified;
                         db.SaveChanges();
                     }
                     else if (rand == 5)
                     {
-                        g.team2Score = g.team2Score + 1;
+                        if (g.Sport.Equals("Basketball"))
+                        {
+                            if (random.Next(1, 3) == 2)
+                            {
+                                g.team2Score = g.team2Score + 3;
+                            }
+                            else
+                            {
+                                g.team2Score = g.team2Score + 2;
+                            }
+                        }
+                        else
+                        {
+                            g.team2Score = g.team2Score + 1;
+                        }
                         db.Entry(g).State = EntityState.Modified;
                         db.SaveChanges();
                     }
@@ -83,10 +110,6 @@ namespace Web_Kladilnica.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
-        }
-        public void updateGames(List<Game> igri)
-        {
-            games = igri;
         }
         [Authorize(Roles = "Administrator")]
         public ActionResult CreateGame()
@@ -284,6 +307,7 @@ namespace Web_Kladilnica.Controllers
                 }
                 TicketDisplayViewModel tv = new TicketDisplayViewModel()
                 {
+                    TicketID=temp.ID,
                     totalCoefficient = temp.totalCoefficient,
                     guesses =temp.guesses,
                     games = viewGames1,
@@ -356,6 +380,7 @@ namespace Web_Kladilnica.Controllers
                 }
                 TicketDisplayViewModel tv = new TicketDisplayViewModel()
                 {
+                    TicketID = temp.ID,
                     totalCoefficient = temp.totalCoefficient,
                     guesses = temp.guesses,
                     games = viewGames1,
@@ -408,6 +433,17 @@ namespace Web_Kladilnica.Controllers
                 return false;
             }
             db.Games.Remove(g);
+            db.SaveChanges();
+            return true;
+        }
+        public bool DeleteTicket(int id)
+        {
+            Ticket t = db.tickets.Find(id);
+            if (t == null)
+            {
+                return false;
+            }
+            db.tickets.Remove(t);
             db.SaveChanges();
             return true;
         }

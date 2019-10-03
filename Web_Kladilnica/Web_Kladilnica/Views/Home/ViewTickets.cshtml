@@ -75,10 +75,41 @@
                     {
                         <i style="color:red" class="fas fa-times"></i>
                     }
+                    @if (User.IsInRole("Administrator"))
+                    {
+                        <br />
+                        <button ticket-ID=@item.TicketID class="btn btn-link brisi" onclick="brisiTicket(@item.TicketID)">Delete</button>
+                    }
+                    @if (User.IsInRole("User") && item.Result == true)
+                    {
+                        <br />
+                        <button ticket-ID=@item.TicketID class="btn btn-link brisi" onclick="brisiTicket(@item.TicketID)">Delete</button>
+                    }
                 </div>
             </div>
         </div>
     </div>
 
 }
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+<script src="~/Scripts/jquery-3.3.1.js"></script>
 <script src="https://kit.fontawesome.com/8eb5fa4392.js"></script>
+<script>
+     const brisiTicket = function (idto) {
+        var sel = "[ticket-ID=" + idto + "]";
+        var btn = $(sel);
+            var sigurnost = confirm("Are you sure you want to delete this ticket?");
+            if (sigurnost == true) {
+                $.ajax({
+                    method: "POST",
+                    url: "/Home/DeleteTicket/" + btn.attr("ticket-ID"),
+                    success: function () {
+                       btn.parents(".panel-group").remove();
+                    }
+                })
+            }
+        
+                
+        }
+</script>

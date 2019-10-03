@@ -126,12 +126,15 @@ namespace Web_Kladilnica.Controllers
             {
                 return false;
             }
-            List<Game> igri=db.Games.Where(m => m.Team1ID == t.ID || m.Team2ID == t.ID).ToList();
-            foreach(Game g in igri)
-            {
-                db.Games.Remove(g);
-            }
             db.Teams.Remove(t);
+            List<Game> igri=db.Games.Where(m => m.Team1ID == t.ID || m.Team2ID == t.ID).ToList();
+            if (igri.Count > 0)
+            {
+                foreach (Game g in igri)
+                {
+                    db.Games.Remove(g);
+                }
+            }
             db.SaveChanges();
             return true;
         }
