@@ -118,6 +118,23 @@ namespace Web_Kladilnica.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
+        [Authorize(Roles ="Administrator")]
+        public bool DeleteTeam(int id)
+        {
+            Team t = db.Teams.Find(id);
+            if (t == null)
+            {
+                return false;
+            }
+            List<Game> igri=db.Games.Where(m => m.Team1ID == t.ID || m.Team2ID == t.ID).ToList();
+            foreach(Game g in igri)
+            {
+                db.Games.Remove(g);
+            }
+            db.Teams.Remove(t);
+            db.SaveChanges();
+            return true;
+        }
 
         protected override void Dispose(bool disposing)
         {

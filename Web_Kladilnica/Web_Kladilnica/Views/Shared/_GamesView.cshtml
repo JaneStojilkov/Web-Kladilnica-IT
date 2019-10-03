@@ -55,7 +55,7 @@
                         {
                             <span>@(item.Time - 15)</span>
                         }
-                        @if (item.HalfTime == false && item.Time < 60)
+                        @if (item.HalfTime == false && item.Time < 60 && item.Time>=0)
                         {
                             <span>@item.Time</span>
                         }
@@ -63,6 +63,9 @@
                         {
                             <span>FT</span>
                         }
+                        @if (item.Time < 0)
+                        {
+                            <span>Game starts at @item.start.Hour:@item.start.Minute</span>}
                     </td>
                     <td>
                         @if (item.completed || User.Identity.Name.Length==0)
@@ -90,8 +93,8 @@
                     @if(User.IsInRole("Administrator"))
                     {
                     <td>
-                        @Html.ActionLink("Edit", "Edit", new { id = item.gameId }) |
-                        @Html.ActionLink("Delete", "Delete", new { id = item.gameId })
+                        @Html.ActionLink("Edit", "EditGame", new { id = item.gameId }) |
+                        <button igra-ID="@item.gameId" class="btn btn-link brisi" onclick="brisiGame()">Delete</button>
                     </td>}
                 </tr>
             }
@@ -103,5 +106,6 @@
 <script>
                         $('.btns').on('click', function () {
                          $(this).addClass("btn-success").siblings().removeClass("btn-success");
-                    })
+                        })
+      
 </script>

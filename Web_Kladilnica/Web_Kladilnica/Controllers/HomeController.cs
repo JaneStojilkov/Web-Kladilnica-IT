@@ -21,32 +21,51 @@ namespace Web_Kladilnica.Controllers
             return View();
         }
        
-        public PartialViewResult GamesPartial(string izbor)
+        public PartialViewResult GamesPartial(string izbor,string datum)
         {
-            List<Game> games = db.Games.Where(m=>m.Sport.Equals(izbor)).ToList();
+                List<Game> games = db.Games.Where(m => m.Sport.Equals(izbor)).ToList();
+            
             List<GameViewModelT> gameView = new List<GameViewModelT>();
-
+            Random random = new Random();
             foreach(Game g in games)
             {
-                GameViewModelT gv = new GameViewModelT()
+                if (g.Time > 0)
                 {
-                    gameId = g.ID,
-                    HalfTime = g.HalfTime,
-                    team1 = db.Teams.Find(g.Team1ID),
-                    team2 = db.Teams.Find(g.Team2ID),
-                    start = g.StartTime,
-                    end = g.EndTime,
-                    team1Score = g.team1Score,
-                    team2Score = g.team2Score,
-                    completed = g.Completed,
-                    Coefficient1 = g.Coefficient1,
-                    Coefficient2 = g.Coefficient2,
-                    Coefficient3 = g.Coefficient3,
-                    outcome = g.Result,
-                    Time = g.Time
-                };
-                gameView.Add(gv);
-            
+                    int rand = random.Next(1, 50);
+                    if (rand == 3)
+                    {
+                        g.team1Score = g.team1Score + 1;
+                        db.Entry(g).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                    else if (rand == 5)
+                    {
+                        g.team2Score = g.team2Score + 1;
+                        db.Entry(g).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                }
+                if (g.StartTime.ToShortDateString() == datum)
+                {
+                    GameViewModelT gv = new GameViewModelT()
+                    {
+                        gameId = g.ID,
+                        HalfTime = g.HalfTime,
+                        team1 = db.Teams.Find(g.Team1ID),
+                        team2 = db.Teams.Find(g.Team2ID),
+                        start = g.StartTime,
+                        end = g.EndTime,
+                        team1Score = g.team1Score,
+                        team2Score = g.team2Score,
+                        completed = g.Completed,
+                        Coefficient1 = g.Coefficient1,
+                        Coefficient2 = g.Coefficient2,
+                        Coefficient3 = g.Coefficient3,
+                        outcome = g.Result,
+                        Time = g.Time
+                    };
+                    gameView.Add(gv);
+                }
             }
             return PartialView("_GamesView", gameView);
         }
@@ -279,7 +298,7 @@ namespace Web_Kladilnica.Controllers
 
             return View("ViewTickets",tickets1);
         }
-       
+       [Authorize]
         public ActionResult UserViewTickets(string userID)
         {
             string userid = userID;
@@ -349,5 +368,51 @@ namespace Web_Kladilnica.Controllers
             }
             return View("ViewTickets", tickets1);
         }
+        [Authorize(Roles ="Administrator")]
+        public ActionResult EditGame(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Game game = db.Games.Find(id);
+            if (game == null)
+            {
+                return HttpNotFound();
+            }
+            GameCreateModel gcm = new GameCreateModel();
+            gcm.team1ID = game.Team1ID;
+            gcm.team2ID = game.Team2ID;
+            gcm.game = game;
+            gcm.teams = db.Teams.ToList();
+            return View("EditGame", gcm);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditGame([Bind(Include = "game,team1ID,team2ID")] GameCreateModel gcm)
+        {
+                
+            if (ModelState.IsValid)
+            {
+                db.Entry(gcm.game).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View("EditGame", gcm);
+        }
+        public bool DeleteGame(int id)
+        {
+            Game g = db.Games.Find(id);
+            if (g == null)
+            {
+                return false;
+            }
+            db.Games.Remove(g);
+            db.SaveChanges();
+            return true;
+        }
+       
+        
+
     }
 }
